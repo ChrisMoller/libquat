@@ -18,8 +18,7 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | ----------- | --- |------------ |
 | Quat () | $\Rightarrow$ | null quaternion [0 0 0 0] |
 | Quat (double s) | $\Rightarrow$ | scalar quaternion [s 0 0 0] |
-| Quat (double s, double a0, double a1, double a2) | $\Rightarrow$ | \
-     mplete quaternion [s a0 a1 a2] |
+| Quat (double s, double a0, double a1, double a2) | $\Rightarrow$ | mplete quaternion [s a0 a1 a2] |
 
 ### Simple arithmetic
 
