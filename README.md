@@ -36,8 +36,7 @@ such that quaternion + quaternion yields a quaternion, and so on.
 
 | operation |     | effect |
 | --------- | --- | ------ |
-| Quat operator*=(Quat &v);   | $\Rightarrow$ |
-Quat *= Quat $\rightarrow$ Quat |
+| Quat operator*=(Quat &v);   | $\Rightarrow$ | Quat *= Quat $\rightarrow$ Quat |
 | Quat operator*=(double &v); | $\Rightarrow$ |
 Quat *= double $\rightarrow$ Quat |
 | Quat operator/=(Quat &v);   | $\Rightarrow$ |
