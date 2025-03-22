@@ -1,5 +1,5 @@
-# Quaternions
-Quaternions is a small library that implements quaternion algebra.
+# libquat
+libquat is a small library that implements quaternion algebra.
 
 A quaternion is a four-element vector that encodes a scalar value and a
 3-space directional vector in the form of
