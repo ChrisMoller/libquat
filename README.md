@@ -47,7 +47,7 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | operation |     | effect |
 | --------- | --- | ------ |
 | Quat          operator*();   | $\Rightarrow$ | conjugation: [s $-a_0$ $-a_1$ $-a_2$] |
-| Quat          operator+();   | $\Rightarrow$ | norm: \|\| Quat \|\| |
+| Quat          operator+();   | $\Rightarrow$ | norm: \|\| q \|\| |
 | Quat          operator-();   | $\Rightarrow$ | negation: [-s $-a_0$ $-a_1$ $-a_2$] |
 | Quat          operator~();   | $\Rightarrow$ | inversion: $q^{-1}$ |
 
@@ -71,13 +71,13 @@ invert.
 The above are just what I've found I need, so far, for graphics work, but if anyone needs
 anything else, I'll be glad to add it.
 
-## Simple comparisons
+## Miscellaneous
 
 | operation |     | effect |
 | --------- | --- | ------ |
-| double Quat::qdot (Quat &a, Quat &b);; | $\Rightarrow$ | dot-product |
-| double Quat::qang (Quat &a, Quat &b);; | $\Rightarrow$ | angle subtended by the argument quats |
-| Quat Quat::qcross (Quat &a, Quat &b);; | $\Rightarrow$ | cross-product |
+| double Quat::qdot (Quat &a);; | $\Rightarrow$ | dot-product |
+| double Quat::qang (Quat &a);; | $\Rightarrow$ | angle subtended by the argument quats |
+| Quat Quat::qcross (Quat &a);; | $\Rightarrow$ | cross-product |
 
 ## Examples
 
