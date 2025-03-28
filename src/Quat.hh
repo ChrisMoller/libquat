@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 
+static void set_makeexp ();
+
 using namespace std;
 
 class Quat
@@ -52,6 +54,7 @@ public:
   static string	qstr (Quat v);		// stringify
 #endif
 
+  
   friend ostream& operator<<(ostream& os, const Quat &v);
 
 #if 0

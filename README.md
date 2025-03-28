@@ -52,14 +52,11 @@ such that quaternion + quaternion yields a quaternion, and so on.
 | Quat          operator~();   | $\Rightarrow$ | inversion: $q^{-1}$ |
 
 These operators don't follow standard C++ significance.  C++ has no
-conjugation operator--but
-quaternions don't need a dereferencing operator, so I've mapped '*' to
-conjugation.  Similarly,
-C++ has no monadic '|', which might have been good as a magnitude operator,
-but monadic
-'+' isn't relevant to quaternions so is mappped to magnitude.  Similarly, '~'
-is mapped to
-invert. 
+conjugation operator--but quaternions don't need a dereferencing operator, so
+I've mapped '*' to conjugation.  Similarly, C++ has no monadic '|', which
+might have been good as a magnitude operator, but monadic '+' isn't relevant
+to quaternions so is mappped to magnitude.  Similarly, '~' (tilde) is mapped
+to invert.
 
 ## Simple comparisons
 
