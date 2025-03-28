@@ -78,7 +78,17 @@ anything else, I'll be glad to add it.
 
 ## Examples
 
-test.cc tests all of the above and can be used as boilerplate for usage.  rot.cc is a testcase
-for 3-space rotation.
+quattest.cc tests all of the above and can be used as boilerplate for usage.
+./quattest -a dumps all the tests.  (That was the basis for the "make check" expects
+file.)  rot.cc is a testcase for 3-space rotation.
+
+## Installation
+
+./autogen.sh
+
+make
+
+sudo make install
+
 
 
