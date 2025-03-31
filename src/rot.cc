@@ -41,6 +41,10 @@ main ()
   }
   cout << "p1 =" << p1 << endl;
 
+  Quat xf = p0.qxform (p1);
+  cout << "multistep " << theta << "  " << u << endl;
+  cout << "one step " << xf << endl;
+
   return 0;
 }
 

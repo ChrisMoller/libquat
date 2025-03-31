@@ -42,9 +42,10 @@ TEST (22, cout << r.qdot (s);)
 TEST (23, cout << r.qdot (r);)
 TEST (24, cout << r.qcross (s);)
 TEST (25, cout << r.qcross (r);)
-TEST (26, cout << R2D (r.qang (s));)
-TEST (27, cout << R2D (r.qang (r));)
-TEST (28, cout << r.qstr ();)
+TEST (26, cout << r.qxform (s);)
+TEST (27, cout << R2D (r.qang (s));)
+TEST (28, cout << R2D (r.qang (r));)
+TEST (29, cout << r.qstr ();)
 
 typedef void (*fcn_t)();
 
@@ -77,7 +78,8 @@ fcn_t fcns[] = {
   test25,
   test26,
   test27,
-  test28
+  test28,
+  test29
 };
       
 int nr_opts = sizeof(fcns) / sizeof(fcn_t);

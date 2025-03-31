@@ -274,6 +274,15 @@ Quat::qdot (Quat &v)
 }
 
 Quat
+Quat::qxform (Quat &v)
+{
+  Quat xform = this->qcross (v);
+  double ang = this->qang (v);
+  xform.a = ang;
+  return xform;
+}
+
+Quat
 Quat::qcross (Quat &v)
 {
   Quat s;

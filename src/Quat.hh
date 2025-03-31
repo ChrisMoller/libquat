@@ -66,6 +66,7 @@ public:
   double	qdot (Quat &v);
   Quat		qcross (Quat &v);
   double	qang (Quat &v);
+  Quat		qxform (Quat &v);
 
   void show ();
   void show (string l);
