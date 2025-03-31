@@ -72,9 +72,14 @@ anything else, I'll be glad to add it.
 
 | operation |     | effect |
 | --------- | --- | ------ |
-| double Quat::qdot (Quat &a);; | $\Rightarrow$ | dot-product |
-| double Quat::qang (Quat &a);; | $\Rightarrow$ | angle subtended by the argument quats |
-| Quat Quat::qcross (Quat &a);; | $\Rightarrow$ | cross-product |
+| double qdot (Quat &a);; | $\Rightarrow$ | dot-product |
+| double qang (Quat &a);; | $\Rightarrow$ | angle subtended by the argument quats |
+| Quat qcross (Quat &a);; | $\Rightarrow$ | cross-product |
+| Quat qxform (Quat &a);; | $\Rightarrow$ | transform* |
+
+* qxform returns a transform Quat that, applied to *this will yield Quat a.  Among the
+uses of this is looping the transform with the scalar component incremented from 0.0 to
+the returned scalar value results in a smooth transition from *this to Quat a;
 
 ## Examples
 
