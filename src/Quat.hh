@@ -84,7 +84,7 @@ public:
   double	qdot (Quat &v);
   Quat		qcross (Quat &v);
   double	qang (Quat &v);
-  Quat		qxform (Quat &v);
+  Quat		qrot (Quat &v);	// rotate this by v
 
   void show ();
   void show (string l);

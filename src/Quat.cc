@@ -292,12 +292,15 @@ Quat::qdot (Quat &v)
 }
 
 Quat
-Quat::qxform (Quat &v)
+Quat::qrot (Quat &v)	// rotate this by v
 {
-  Quat xform = this->qcross (v);
-  double ang = this->qang (v);
-  xform.a = ang;
-  return xform;
+  double theta = v.a;
+  double costheta = cos (theta / 2.0);
+  double sintheta = sin (theta / 2.0);
+  Quat p = Quat (0, b, c, d);
+  Quat q = Quat (costheta, sintheta * v.b, sintheta * v.c, sintheta * v.d);
+  Quat r = q * p * ~q;
+  return r;
 }
 
 Quat
