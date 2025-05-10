@@ -1,6 +1,6 @@
 
 /*
-    libquat Copyright (C) 2025  C. H. L. Moller under the terms of the
+    aplquat Copyright (C) 2025  Dr C. H. L. Moller under the terms of the
     GNU General Public License Version 3.
 
     This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -25,10 +26,10 @@
 
 Quat::Quat ()
 {
-  a = 0;
-  b = 0;
-  c = 0;
-  d = 0;
+  a = NAN;
+  b = NAN;
+  c = NAN;
+  d = NAN;
 }
 
 Quat::Quat (double ai, double bi, double ci, double di)
@@ -47,6 +48,14 @@ Quat::Quat (double ai)
   d = 0;
 }
 
+Quat::Quat (double *v)
+{
+  a = v[0];
+  b = v[1];
+  c = v[2];
+  d = v[3];
+}
+    
 Quat::~Quat ()
 {
 }
@@ -96,13 +105,13 @@ Quat::operator-=(Quat &v)	// subtract-assign
 }
 
 Quat
-Quat::operator*(Quat v)	// multiply
+Quat::operator*(Quat v)	// multiply / product
 {
   Quat s;
-  s.a = (a * v.a) - (b * v.b) - (c * v.c) - (d * v.d);
-  s.b = (a * v.b) + (b * v.a) + (c * v.d) - (d * v.c);
-  s.c = (a * v.c) - (b * v.d) + (c * v.a) + (d * v.b);
-  s.d = (a * v.d) + (b * v.c) - (c * v.b) + (d * v.a);
+  s.a = (a * v.a) - ((b * v.b) + (c * v.c) + (d * v.d));
+  s.b = ((a * v.b) + (b * v.a) + (c * v.d)) - (d * v.c);
+  s.c = ((a * v.c) + (c * v.a) + (d * v.b)) - (b * v.d);
+  s.d = ((a * v.d) + (b * v.c) + (d * v.a)) - (c * v.b);
   return s;
 }
 
@@ -110,10 +119,10 @@ Quat
 Quat::operator*=(Quat &v)	// multiply-assign
 {
   Quat s;
-  s.a = (a * v.a) - (b * v.b) - (c * v.c) - (d * v.d);
-  s.b = (a * v.b) + (b * v.a) + (c * v.d) - (d * v.c);
-  s.c = (a * v.c) - (b * v.d) + (c * v.a) + (d * v.b);
-  s.d = (a * v.d) + (b * v.c) - (c * v.b) + (d * v.a);
+  s.a = (a * v.a) - ((b * v.b) + (c * v.c) + (d * v.d));
+  s.b = ((a * v.b) + (b * v.a) + (c * v.d)) - (d * v.c);
+  s.c = ((a * v.c) + (c * v.a) + (d * v.b)) - (b * v.d);
+  s.d = ((a * v.d) + (b * v.c) + (d * v.a)) - (c * v.b);
   a = s.a;
   b = s.b;
   c = s.c;
@@ -146,7 +155,7 @@ Quat
 Quat::operator/(Quat v)	// divide
 {
   Quat s = ~v;			// invert denominator
-  Quat t = s * *this;
+  Quat t = *this * s;
   return t;
 }
 
@@ -154,7 +163,7 @@ Quat
 Quat::operator/=(Quat &v)	// divide-assign
 {
   Quat s = ~v;			// invert denominator
-  Quat t = s * *this;
+  Quat t = *this * s;
   *this = t;
   return t;
 }
@@ -205,11 +214,11 @@ Quat::operator-()		// negation
 // have made more sense, so I'm using monadic tilde (~)
 // because quaternions have no use for a complement operator
 Quat
-Quat::operator~()		// reciprocal
+Quat::operator~()		// reciprocal / invert
 {
   Quat s;
   double m2 = (a * a) + (b * b) + (c * c) + (d * d);
-  s.a = a/m2;
+  s.a =  a/m2;
   s.b = -b/m2;
   s.c = -c/m2;
   s.d = -d/m2;
@@ -230,7 +239,6 @@ Quat::operator!=(Quat v)	// neq
   return s;
 }
 
-
 string
 Quat::qstr ()			// stringify
 {
@@ -241,17 +249,32 @@ Quat::qstr ()			// stringify
   return t;
 }
 
-#if 0
-string
-Quat::qstr (Quat v)		// stringify
+double *
+Quat::qvec ()			// convert to array
 {
-  char *s;
-  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", v.a, v.b, v.c, v.d);
-  string t (s);
-  free (s);
-  return t;
+  double *v = new double[4];
+  v[0] = a;
+  v[1] = b;
+  v[2] = c;
+  v[3] = d;
+  return v;
 }
-#endif
+
+double *
+Quat::qaxis ()			// extract axis component
+{
+  double *v = new double[3];
+  v[0] = b;
+  v[1] = c;
+  v[2] = d;
+  return v;
+}
+
+double
+Quat::qscalar ()		// extract scalar component
+{
+  return a;
+}
 
 ostream&
 operator<<(ostream& os, const Quat &v)
@@ -260,47 +283,17 @@ operator<<(ostream& os, const Quat &v)
     return os;
 }
 
-#if 0
-double
-Quat::qdot (Quat &a, Quat &b)
-{
-  return (a.a * b.a) + (a.b * b.b) + (a.c * b.c) + (a.d * b.d);
-}
-
-Quat
-Quat::qcross (Quat &a, Quat &b)
-{
-  Quat s;
-  s.a = 0.0;
-  s.b = (a.c * b.d) - (a.d * b.c);
-  s.c = (a.d * b.b) - (a.b * b.d);
-  s.d = (a.b * b.c) - (a.c * b.b);
-  return s;
-}
-
-double
-Quat::qang (Quat &a, Quat &b)
-{
-  return acos (Quat::qdot (a, b) / (+a * +b));
-}
-#endif
-
 double
 Quat::qdot (Quat &v)
 {
-  return (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
+  return (b * v.b) + (c * v.c) + (d * v.d);
 }
 
 Quat
-Quat::qrot (Quat &v)	// rotate this by v
+Quat::qrot (Quat &v)
 {
-  double theta = v.a;
-  double costheta = cos (theta / 2.0);
-  double sintheta = sin (theta / 2.0);
-  Quat p = Quat (0, b, c, d);
-  Quat q = Quat (costheta, sintheta * v.b, sintheta * v.c, sintheta * v.d);
-  Quat r = q * p * ~q;
-  return r;
+  Quat q =  (*this) * v * ~(*this);
+  return q;
 }
 
 Quat
