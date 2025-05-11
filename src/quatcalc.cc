@@ -76,15 +76,153 @@ do_plus_qq (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat q = a.getQuat () + b.getQuat ();
-      cout << q << endl;
-    }
+    cout << a.getQuat () + b.getQuat () << endl;;
     break;
   case WHICH_QU:
+    cout << +a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_minus_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << a.getQuat () - b.getQuat () << endl;;
+    break;
+  case WHICH_QU:
+    cout << -a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_star_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << a.getQuat () * b.getQuat () << endl;;
+    break;
+  case WHICH_QD:
+    cout << a.getQuat () * b.getDouble () << endl;;
+    break;
+  case WHICH_QU:
+    cout << *a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_slash_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << a.getQuat () / b.getQuat () << endl;;
+    break;
+  case WHICH_QD:
+    cout << a.getQuat () / b.getDouble () << endl;;
+    break;
+  case WHICH_QU:
+    cout << ~a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_eq_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << (a.getQuat () == b.getQuat ()) << endl;;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_ne_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << (a.getQuat () != b.getQuat ()) << endl;;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_dot_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
     {
-      Quat q = +a.getQuat ();
-      cout << q << endl;
+      Quat bv = b.getQuat ();
+      cout << (a.getQuat ()).qdot (bv) << endl;;
+    }
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_cross_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat bv = b.getQuat ();
+      cout << (a.getQuat ()).qcross (bv) << endl;;
+    }
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_ang_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat bv = b.getQuat ();
+      cout << (a.getQuat ()).qang (bv) << endl;;
+    }
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_rot_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat bv = b.getQuat ();
+      cout << (a.getQuat ()).qrot (bv) << endl;;
     }
     break;
   default:
@@ -95,9 +233,15 @@ do_plus_qq (Value a, Value b)
 
 kwd_s kwds[] = {
   {"+",		do_plus_qq},
-  //  {"-",		do_minus_qq},
-  //  {"*",		do_star_qq},
-  //  {"/",		do_slash_qq}
+  {"-",		do_minus_qq},
+  {"*",		do_star_qq},
+  {"/",		do_slash_qq},
+  {"==",	do_eq_qq},
+  {"!=",	do_ne_qq},
+  {"dot",	do_dot_qq},
+  {"cross",	do_cross_qq},
+  {"ang",	do_ang_qq},
+  {"rot",	do_rot_qq}
 };
 
 int nr_kwds = sizeof (kwds) / sizeof (kwd_s);
