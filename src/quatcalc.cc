@@ -15,24 +15,40 @@ using namespace std;
 
 
 
+typedef enum {
+  TYPE_UNSET,
+  TYPE_DOUBLE,
+  TYPE_QUAT
+} vtype_t;
+
+enum {
+  WHICH_UU = (4 * TYPE_UNSET)  + TYPE_UNSET,
+  WHICH_UD = (4 * TYPE_UNSET)  + TYPE_DOUBLE,
+  WHICH_UQ = (4 * TYPE_UNSET)  + TYPE_QUAT,
+  WHICH_DU = (4 * TYPE_DOUBLE) + TYPE_UNSET,
+  WHICH_DD = (4 * TYPE_DOUBLE) + TYPE_DOUBLE,
+  WHICH_DQ = (4 * TYPE_DOUBLE) + TYPE_QUAT,
+  WHICH_QU = (4 * TYPE_QUAT)   + TYPE_UNSET,
+  WHICH_QD = (4 * TYPE_QUAT)   + TYPE_DOUBLE,
+  WHICH_QQ = (4 * TYPE_QUAT)   + TYPE_QUAT
+} which_e;
 
 class Value
 {
 public:
   Value () {d = NAN;}
-  Value (double v) {d = v; vtype = TYPE_DOUBLE;}
-  Value (double v, double w, double x, double y)
-            {q = Quat (v, w, x, y); vtype = TYPE_QUAT;}
-  typedef enum {
-    TYPE_UNSET,
-    TYPE_DOUBLE,
-    TYPE_QUAT
-  } vtype_t;
+  Value (double v) {
+    d = v; vtype = TYPE_DOUBLE;
+  }
+  Value (double v, double w, double x, double y) {
+    q = Quat (v, w, x, y); vtype = TYPE_QUAT;
+  }
   Quat   getQuat ()   {return q;}
   double getDouble () {return d;}
   bool   isDouble ()  {return vtype == TYPE_DOUBLE;}
   bool   isQuat ()    {return vtype == TYPE_QUAT;}
   bool   isSet ()     {return vtype != TYPE_UNSET;}
+  int    getType ()   {return vtype;}
 private:
   vtype_t vtype = TYPE_UNSET;
   Quat q;
@@ -49,47 +65,39 @@ typedef struct {
 #define opt_kwd(i) kwds[i].kwdx
 #define opt_fcn(i) kwds[i].fcnx
 
+static int
+which (Value a, Value b)
+{
+  return  4 * a.getType () + b.getType ();
+}
+
 static void
 do_plus_qq (Value a, Value b)
 {
-  if (a.isQuat ()) {				// valid
-    if (b.isSet ()) {				// dyadic
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
       Quat q = a.getQuat () + b.getQuat ();
       cout << q << endl;
     }
-    else {					// monadic
-      double d = +a.getQuat ();
-      cout << d << endl;
+    break;
+  case WHICH_QU:
+    {
+      Quat q = +a.getQuat ();
+      cout << q << endl;
     }
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
   }
-}
-
-static void
-do_minus_qq (Value a, Value b)
-{
-  //Quat q = a.q + b.q;
-  //cout << "do_minus_qq " << q << endl;
-}
-
-static void
-do_star_qq (Value a, Value b)
-{
-  //Quat q = a.q + b.q;
-  //cout << "do_star_qq " << q << endl;
-}
-
-static void
-do_slash_qq (Value a, Value b)
-{
-  //Quat q = a.q + b.q;
-  //cout << "do_slash_qq " << q << endl;
 }
 
 kwd_s kwds[] = {
   {"+",		do_plus_qq},
-  {"-",		do_minus_qq},
-  {"*",		do_star_qq},
-  {"/",		do_slash_qq}
+  //  {"-",		do_minus_qq},
+  //  {"*",		do_star_qq},
+  //  {"/",		do_slash_qq}
 };
 
 int nr_kwds = sizeof (kwds) / sizeof (kwd_s);
