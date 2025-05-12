@@ -2,9 +2,7 @@ AUTOMAKE_OPTIONS = dejagnu
 SUBDIRS = src
 dist_doc_DATA = README.md
 EXTRA_DIST = autogen.sh src test
-#RUNTESTFLAGS = --tool test TEST=`pwd`/src/test --srcdir $$srcdir/test
-RUNTESTFLAGS = --tool quattest TEST=`pwd`/src/quattest --srcdir $$srcdir/test
-#RUNTESTFLAGS = -tool test   --srcdir "." 
+RUNTESTFLAGS = --tool quatcalc QUATCALC=`pwd`/src/quatcalc --srcdir $$srcdir/test
 
 save:
 	gitpush

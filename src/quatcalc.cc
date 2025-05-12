@@ -1,3 +1,5 @@
+// https://www.omnicalculator.com/math/quaternion
+
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
