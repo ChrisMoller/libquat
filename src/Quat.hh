@@ -20,6 +20,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include <stdio.h>
 
@@ -32,6 +33,7 @@ public:
   Quat (double ai, double bi, double ci, double di);
   Quat (double ai);
   Quat (double *v);
+  Quat (vector<double> v);
   ~Quat ();
 
   Quat 		operator+(Quat v);	// add
@@ -66,9 +68,8 @@ public:
 
   bool		operator!=(Quat v);	// neq
 
-  string	qstr ();		// stringify
-  double *      qvec ();		// convert to array
-  double *      qaxis ();		// extract axis component
+  vector<double> qvec ();		// convert to array
+  vector<double> qaxis ();		// extract axis component
   double        qscalar ();		// extract scalar component
 
   double	qdot (Quat v);
@@ -78,8 +79,11 @@ public:
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 
-  void show ();
-  void show (string l);
+  /*  diagnostic stuff */
+  
+  string	qstr ();		// stringify
+  void 		show ();
+  void 		show (string l);
 
 private:
   double a;

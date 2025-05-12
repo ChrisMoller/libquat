@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <vector>
 
 #include "Quat.hh"
 
@@ -54,6 +55,29 @@ Quat::Quat (double *v)
   b = v[1];
   c = v[2];
   d = v[3];
+}
+
+Quat::Quat (vector<double> v)
+{
+  try {
+    if (v.size () == 3) {
+      a = 0.0;
+      b = v[0];
+      c = v[1];
+      d = v[2];
+    }
+    else if (v.size () == 4) {
+      a = v[0];
+      b = v[1];
+      c = v[2];
+      d = v[3];
+    }
+    else
+      throw 1;
+  }
+  catch(...) {
+    cerr << "invalid vector size in constructor\n";
+  }
 }
     
 Quat::~Quat ()
@@ -239,20 +263,10 @@ Quat::operator!=(Quat v)	// neq
   return s;
 }
 
-string
-Quat::qstr ()			// stringify
-{
-  char *s;
-  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", a, b, c, d);
-  string t (s);
-  free (s);
-  return t;
-}
-
-double *
+vector<double>
 Quat::qvec ()			// convert to array
 {
-  double *v = new double[4];
+  vector<double> v = {0.0, 0.0, 0.0, 0.0};
   v[0] = a;
   v[1] = b;
   v[2] = c;
@@ -260,10 +274,10 @@ Quat::qvec ()			// convert to array
   return v;
 }
 
-double *
+vector<double>
 Quat::qaxis ()			// extract axis component
 {
-  double *v = new double[3];
+  vector<double> v = {0.0, 0.0, 0.0};
   v[0] = b;
   v[1] = c;
   v[2] = d;
@@ -312,6 +326,18 @@ Quat::qang (Quat v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));
+}
+
+/*  diagnostic stuff */
+
+string
+Quat::qstr ()			// stringify
+{
+  char *s;
+  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", a, b, c, d);
+  string t (s);
+  free (s);
+  return t;
 }
 
 void

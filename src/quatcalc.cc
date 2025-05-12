@@ -30,7 +30,7 @@ enum {
   WHICH_DQ = (4 * TYPE_DOUBLE) + TYPE_QUAT,
   WHICH_QU = (4 * TYPE_QUAT)   + TYPE_UNSET,
   WHICH_QD = (4 * TYPE_QUAT)   + TYPE_DOUBLE,
-  WHICH_QQ = (4 * TYPE_QUAT)   + TYPE_QUAT
+  WHICH = (4 * TYPE_QUAT)   + TYPE_QUAT
 } which_e;
 
 class Value
@@ -72,10 +72,10 @@ which (Value a, Value b)
 }
 
 static void
-do_plus_qq (Value a, Value b)
+do_plus (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << a.getQuat () + b.getQuat () << endl;;
     break;
   case WHICH_QU:
@@ -88,10 +88,10 @@ do_plus_qq (Value a, Value b)
 }
 
 static void
-do_minus_qq (Value a, Value b)
+do_minus (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << a.getQuat () - b.getQuat () << endl;;
     break;
   case WHICH_QU:
@@ -104,10 +104,10 @@ do_minus_qq (Value a, Value b)
 }
 
 static void
-do_star_qq (Value a, Value b)
+do_star (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << a.getQuat () * b.getQuat () << endl;;
     break;
   case WHICH_QD:
@@ -123,10 +123,10 @@ do_star_qq (Value a, Value b)
 }
 
 static void
-do_slash_qq (Value a, Value b)
+do_slash (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << a.getQuat () / b.getQuat () << endl;;
     break;
   case WHICH_QD:
@@ -142,10 +142,10 @@ do_slash_qq (Value a, Value b)
 }
 
 static void
-do_eq_qq (Value a, Value b)
+do_eq (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << (a.getQuat () == b.getQuat ()) << endl;;
     break;
   default:
@@ -155,10 +155,10 @@ do_eq_qq (Value a, Value b)
 }
 
 static void
-do_ne_qq (Value a, Value b)
+do_ne (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << (a.getQuat () != b.getQuat ()) << endl;;
     break;
   default:
@@ -168,10 +168,10 @@ do_ne_qq (Value a, Value b)
 }
 
 static void
-do_dot_qq (Value a, Value b)
+do_dot (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << (a.getQuat ()).qdot (b.getQuat ()) << endl;;
     break;
   default:
@@ -181,10 +181,10 @@ do_dot_qq (Value a, Value b)
 }
 
 static void
-do_cross_qq (Value a, Value b)
+do_cross (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << (a.getQuat ()).qcross (b.getQuat ()) << endl;;
     break;
   default:
@@ -194,10 +194,10 @@ do_cross_qq (Value a, Value b)
 }
 
 static void
-do_ang_qq (Value a, Value b)
+do_ang (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     //    cout << (a.getQuat ()).qang (b.getQuat ()) << endl;;
     break;
   default:
@@ -207,10 +207,10 @@ do_ang_qq (Value a, Value b)
 }
 
 static void
-do_rot_qq (Value a, Value b)
+do_rot (Value a, Value b)
 {
   switch(which (a, b)) {
-  case WHICH_QQ:
+  case WHICH:
     cout << (a.getQuat ()).qrot (b.getQuat ()) << endl;;
     break;
   default:
@@ -220,7 +220,7 @@ do_rot_qq (Value a, Value b)
 }
 
 static void
-do_scalar_qq (Value a, Value b)
+do_scalar (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QU:
@@ -233,11 +233,34 @@ do_scalar_qq (Value a, Value b)
 }
 
 static void
-do_axis_qq (Value a, Value b)
+do_axis (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QU:
-    cout << (a.getQuat ()).qaxis () << endl;
+    {
+      vector<double> v = (a.getQuat ()).qaxis ();
+      for (auto i : v)
+        cout << i << " ";
+      cout << endl;
+    }
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_vector (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QU:
+    {
+      vector<double> v = (a.getQuat ()).qvec ();
+      for (auto i : v)
+        cout << i << " ";
+      cout << endl;
+    }
     break;
   default:
     cout << "invalid args\n";
@@ -246,18 +269,19 @@ do_axis_qq (Value a, Value b)
 }
 
 kwd_s kwds[] = {
-  {"+",		do_plus_qq},
-  {"-",		do_minus_qq},
-  {"*",		do_star_qq},
-  {"/",		do_slash_qq},
-  {"==",	do_eq_qq},
-  {"!=",	do_ne_qq},
-  {"dot",	do_dot_qq},
-  {"cross",	do_cross_qq},
-  {"ang",	do_ang_qq},
-  {"rot",	do_rot_qq},
-  {"scalar",	do_scalar_qq},
-  {"axis",	do_scalar_qq}
+  {"+",		do_plus},
+  {"-",		do_minus},
+  {"*",		do_star},
+  {"/",		do_slash},
+  {"==",	do_eq},
+  {"!=",	do_ne},
+  {"dot",	do_dot},
+  {"cross",	do_cross},
+  {"ang",	do_ang},
+  {"rot",	do_rot},
+  {"scalar",	do_scalar},
+  {"axis",	do_axis},
+  {"vector",	do_vector}
 };
 
 int nr_kwds = sizeof (kwds) / sizeof (kwd_s);
