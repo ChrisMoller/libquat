@@ -172,10 +172,7 @@ do_dot_qq (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat bv = b.getQuat ();
-      cout << (a.getQuat ()).qdot (bv) << endl;;
-    }
+    cout << (a.getQuat ()).qdot (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";
@@ -188,10 +185,7 @@ do_cross_qq (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat bv = b.getQuat ();
-      cout << (a.getQuat ()).qcross (bv) << endl;;
-    }
+    cout << (a.getQuat ()).qcross (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";
@@ -204,10 +198,7 @@ do_ang_qq (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat bv = b.getQuat ();
-      cout << (a.getQuat ()).qang (bv) << endl;;
-    }
+    //    cout << (a.getQuat ()).qang (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";
@@ -220,10 +211,33 @@ do_rot_qq (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat bv = b.getQuat ();
-      cout << (a.getQuat ()).qrot (bv) << endl;;
-    }
+    cout << (a.getQuat ()).qrot (b.getQuat ()) << endl;;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_scalar_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QU:
+    cout << (a.getQuat ()).qscalar () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_axis_qq (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QU:
+    cout << (a.getQuat ()).qaxis () << endl;
     break;
   default:
     cout << "invalid args\n";
@@ -241,7 +255,9 @@ kwd_s kwds[] = {
   {"dot",	do_dot_qq},
   {"cross",	do_cross_qq},
   {"ang",	do_ang_qq},
-  {"rot",	do_rot_qq}
+  {"rot",	do_rot_qq},
+  {"scalar",	do_scalar_qq},
+  {"axis",	do_scalar_qq}
 };
 
 int nr_kwds = sizeof (kwds) / sizeof (kwd_s);

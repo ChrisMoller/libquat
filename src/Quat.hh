@@ -71,10 +71,10 @@ public:
   double *      qaxis ();		// extract axis component
   double        qscalar ();		// extract scalar component
 
-  double	qdot (Quat &v);
-  Quat		qcross (Quat &v);
-  double	qang (Quat &v);
-  Quat		qrot (Quat &v);
+  double	qdot (Quat v);
+  Quat		qcross (Quat v);
+  double	qang (Quat v);
+  Quat		qrot (Quat v);
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 

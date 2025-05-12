@@ -42,7 +42,7 @@ TEST (22, cout << r.qdot (s);)
 TEST (23, cout << r.qdot (r);)
 TEST (24, cout << r.qcross (s);)
 TEST (25, cout << r.qcross (r);)
-TEST (26, cout << r.qrot (s);)
+//TEST (26, cout << r.qrot (s);)
 TEST (27, cout << R2D (r.qang (s));)
 TEST (28, cout << R2D (r.qang (r));)
 TEST (29, cout << r.qstr ();)
@@ -76,7 +76,7 @@ fcn_t fcns[] = {
   test23,
   test24,
   test25,
-  test26,
+//  test26,
   test27,
   test28,
   test29

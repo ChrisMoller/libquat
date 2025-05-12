@@ -284,20 +284,20 @@ operator<<(ostream& os, const Quat &v)
 }
 
 double
-Quat::qdot (Quat &v)
+Quat::qdot (Quat v)
 {
   return (b * v.b) + (c * v.c) + (d * v.d);
 }
 
 Quat
-Quat::qrot (Quat &v)
+Quat::qrot (Quat v)
 {
   Quat q =  (*this) * v * ~(*this);
   return q;
 }
 
 Quat
-Quat::qcross (Quat &v)
+Quat::qcross (Quat v)
 {
   Quat s;
   s.a = 0.0;
@@ -308,7 +308,7 @@ Quat::qcross (Quat &v)
 }
 
 double
-Quat::qang (Quat &v)
+Quat::qang (Quat v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));
