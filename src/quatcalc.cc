@@ -200,7 +200,7 @@ do_ang (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH:
-    //    cout << (a.getQuat ()).qang (b.getQuat ()) << endl;;
+    cout << (a.getQuat ()).qang (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";
