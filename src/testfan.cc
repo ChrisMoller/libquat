@@ -41,16 +41,10 @@ main (int ac, char *av[])
     while (-1 != (v = getopt (ac, av, "a:b:"))) {
       switch (v) {
       case 'a':
-	{
-	  argA = parse_arg (optarg);
-	  cout << "a " << argA << endl;
-	}
+	argA = parse_arg (optarg);
 	break;
       case 'b':
-	{
-	  argB = parse_arg (optarg);
-	  cout << "b " << argB << endl;
-	}
+	argB = parse_arg (optarg);
 	break;
       }
     }
