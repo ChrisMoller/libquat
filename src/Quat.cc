@@ -346,6 +346,14 @@ Quat::qfan (int n, Quat v, Quat w)
   vector<Quat> fan;
 
   double baseAngle =  v.qang (w) / 2.0;
+  int c = n;
+  if (n < 0) {
+    baseAngle - M_PI - baseAngle;
+    c = -n;
+  }
+
+  if (fabs (baseAngle) < 1.0e-5) baseAngle = 2.0 * M_PI;
+  
   vector<double> axis = (v.qcross (w)).qvec ();
   
   double magAxis = 0.0;			// get axis magnitude
@@ -353,10 +361,10 @@ Quat::qfan (int n, Quat v, Quat w)
     magAxis += axis[i] * axis[i];
   magAxis = sqrt (magAxis);
 
-  if (n >= 1 || magAxis > 0.0) {
+  if (n != 0 || magAxis > 0.0) {
     for (int i = 1; i < 4; i++)		// normalise axis
       axis[i] /= magAxis;
-    for (int i = 0; i <= n; i++) {
+    for (int i = 0; i <= c; i++) {
       double angle = ((double)i/(double(n))) *  baseAngle;
       double cosAngle = cos (angle);
       double sinAngle = sin (angle);
