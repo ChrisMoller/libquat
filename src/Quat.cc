@@ -314,13 +314,6 @@ Quat::qdot (Quat v)
 }
 
 Quat
-Quat::qrot (Quat v)
-{
-  Quat q =  (*this) * v * ~(*this);
-  return q;
-}
-
-Quat
 Quat::qcross (Quat v)
 {
   Quat s;
@@ -336,6 +329,50 @@ Quat::qang (Quat v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));
+}
+
+Quat
+Quat::qrot (Quat v)
+{
+  Quat q =  (*this) * v * ~(*this);
+  return q;
+}
+
+#define R2D(r) (180.0 * (r)/M_PI)
+
+vector<Quat>
+Quat::qfan (int n, Quat v, Quat w)
+{
+  vector<Quat> fan;
+
+  double baseAngle =  v.qang (w) / 2.0;
+  vector<double> axis = (v.qcross (w)).qvec ();
+  
+  double magAxis = 0.0;			// get axis magnitude
+  for (int i = 1; i < 4; i++)
+    magAxis += axis[i] * axis[i];
+  magAxis = sqrt (magAxis);
+
+  if (magAxis > 0.0) {
+    for (int i = 1; i < 4; i++)		// normalise axis
+      axis[i] /= magAxis;
+    for (int i = 0; i <= n; i++) {
+      double angle = ((double)i/(double(n))) *  baseAngle;
+      double cosAngle = cos (angle);
+      double sinAngle = sin (angle);
+      
+      vector<double> q = {cosAngle, 0.0, 0.0, 0.0};		// initialise q
+      for (int i = 1; i < 4; i++)
+	q[i] = axis[i] * sinAngle;
+
+      Quat qq (q);
+      
+      Quat res = qq * v / qq;
+      fan.push_back (res);
+    }
+  }
+
+  return fan;
 }
 
 /*  diagnostic stuff */

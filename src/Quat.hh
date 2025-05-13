@@ -77,6 +77,7 @@ public:
   Quat		qcross (Quat v);
   double	qang (Quat v);
   Quat		qrot (Quat v);
+  static vector<Quat>  qfan (int n, Quat v, Quat w);
 
   friend ostream& operator<<(ostream& os, const Quat &v);
 
