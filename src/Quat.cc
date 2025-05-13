@@ -96,7 +96,7 @@ Quat::operator+(Quat v)	// add
 }
 
 Quat
-Quat::operator+=(Quat &v)	// add-assign
+Quat::operator+=(Quat v)	// add-assign
 {
   Quat s;
   a += v.a;
@@ -118,7 +118,7 @@ Quat::operator-(Quat v)	// subtract
 }
 
 Quat
-Quat::operator-=(Quat &v)	// subtract-assign
+Quat::operator-=(Quat v)	// subtract-assign
 {
   Quat s;
   a -= v.a;
@@ -140,7 +140,7 @@ Quat::operator*(Quat v)	// multiply / product
 }
 
 Quat
-Quat::operator*=(Quat &v)	// multiply-assign
+Quat::operator*=(Quat v)	// multiply-assign
 {
   Quat s;
   s.a = (a * v.a) - ((b * v.b) + (c * v.c) + (d * v.d));
@@ -166,7 +166,7 @@ Quat::operator*(double v)	// multiply by double
 }
 
 Quat
-Quat::operator*=(double &v)	// multiply by double assign
+Quat::operator*=(double v)	// multiply by double assign
 {
   a = a * v;
   b = b * v;
@@ -184,7 +184,7 @@ Quat::operator/(Quat v)	// divide
 }
 
 Quat
-Quat::operator/=(Quat &v)	// divide-assign
+Quat::operator/=(Quat v)	// divide-assign
 {
   Quat s = ~v;			// invert denominator
   Quat t = *this * s;
@@ -201,6 +201,16 @@ Quat::operator/(double v)	// divide by double
   s.c = c / v;
   s.d = d / v;
   return s;
+}
+
+Quat
+Quat::operator/=(double v)	// multiply by double assign
+{
+  a = a / v;
+  b = b / v;
+  c = c / v;
+  d = d / v;
+  return *this;
 }
 
 // I'm using monadic * because quaternions have no use for

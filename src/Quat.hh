@@ -37,19 +37,20 @@ public:
   ~Quat ();
 
   Quat 		operator+(Quat v);	// add
-  Quat 		operator+=(Quat &v);	// add-assign
+  Quat 		operator+=(Quat v);	// add-assign
 
   Quat 		operator-(Quat v);	// subtract
-  Quat 		operator-=(Quat &v);	// subtract-assign
+  Quat 		operator-=(Quat v);	// subtract-assign
 
   Quat 		operator*(Quat v);	// multiply
-  Quat 		operator*=(Quat &v);	// multiply-assign
+  Quat 		operator*=(Quat v);	// multiply-assign
   Quat 		operator*(double v);	// multiply by double
-  Quat 		operator*=(double &v);	// multiply by double assign
+  Quat 		operator*=(double v);	// multiply by double assign
 
   Quat 		operator/(Quat v);	// divide
-  Quat 		operator/=(Quat &v);	// divide-assign
+  Quat 		operator/=(Quat v);	// divide-assign
   Quat 		operator/(double v);	// divide by double
+  Quat 		operator/=(double v);	// divide by double assign
 
   // I'm using monadic * because quaternions have no use for
   // a dereference operator
@@ -70,7 +71,7 @@ public:
 
   vector<double> qvec ();		// convert to array
   vector<double> qaxis ();		// extract axis component
-  double        qscalar ();		// extract scalar component
+  double         qscalar ();		// extract scalar component
 
   double	qdot (Quat v);
   Quat		qcross (Quat v);

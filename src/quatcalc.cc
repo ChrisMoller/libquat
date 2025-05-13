@@ -74,11 +74,14 @@ which (Value a, Value b)
 }
 
 static void
-do_tilde (Value a, Value b)
+do_plus (Value a, Value b)
 {
   switch(which (a, b)) {
+  case WHICH_QQ:
+    cout << a.getQuat () + b.getQuat () << endl;
+    break;
   case WHICH_QU:
-    cout << ~a.getQuat () << endl;
+    cout << +a.getQuat () << endl;
     break;
   default:
     cout << "invalid args\n";
@@ -87,11 +90,15 @@ do_tilde (Value a, Value b)
 }
 
 static void
-do_plus (Value a, Value b)
+do_plusequal (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    cout << a.getQuat () + b.getQuat () << endl;;
+    {
+      Quat av = a.getQuat ();
+      av += b.getQuat ();
+      cout << av << endl;;
+    }
     break;
   case WHICH_QU:
     cout << +a.getQuat () << endl;
@@ -119,6 +126,26 @@ do_minus (Value a, Value b)
 }
 
 static void
+do_minusequal (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat av = a.getQuat ();
+      av -= b.getQuat ();
+      cout << av << endl;;
+    }
+    break;
+  case WHICH_QU:
+    cout << +a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
 do_star (Value a, Value b)
 {
   switch(which (a, b)) {
@@ -138,6 +165,33 @@ do_star (Value a, Value b)
 }
 
 static void
+do_starequal (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat av = a.getQuat ();
+      av *= b.getQuat ();
+      cout << av << endl;;
+    }
+    break;
+  case WHICH_QD:
+    {
+      Quat av = a.getQuat ();
+      av *= b.getDouble ();
+      cout << av << endl;;
+    }
+    break;
+  case WHICH_QU:
+    cout << +a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
 do_slash (Value a, Value b)
 {
   switch(which (a, b)) {
@@ -147,6 +201,46 @@ do_slash (Value a, Value b)
   case WHICH_QD:
     cout << a.getQuat () / b.getDouble () << endl;;
     break;
+  case WHICH_QU:
+    cout << ~a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_slashequal (Value a, Value b)
+{
+  switch(which (a, b)) {
+  case WHICH_QQ:
+    {
+      Quat av = a.getQuat ();
+      av /= b.getQuat ();
+      cout << av << endl;;
+    }
+    break;
+  case WHICH_QD:
+    {
+      Quat av = a.getQuat ();
+      av /= b.getDouble ();
+      cout << av << endl;;
+    }
+    break;
+  case WHICH_QU:
+    cout << +a.getQuat () << endl;
+    break;
+  default:
+    cout << "invalid args\n";
+    break;
+  }
+}
+
+static void
+do_tilde (Value a, Value b)
+{
+  switch(which (a, b)) {
   case WHICH_QU:
     cout << ~a.getQuat () << endl;
     break;
@@ -284,11 +378,15 @@ do_vector (Value a, Value b)
 }
 
 kwd_s kwds[] = {
-  {"~",		do_tilde},
   {"+",		do_plus},
+  {"+=",	do_plusequal},
   {"-",		do_minus},
+  {"-=",	do_minusequal},
   {"*",		do_star},
+  {"*=",	do_starequal},
   {"/",		do_slash},
+  {"/=",	do_slashequal},
+  {"~",		do_tilde},
   {"==",	do_eq},
   {"!=",	do_ne},
   {"dot",	do_dot},
