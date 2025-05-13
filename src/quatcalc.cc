@@ -23,16 +23,18 @@ typedef enum {
   TYPE_QUAT
 } vtype_t;
 
+#define make_idx(a,b) ((4*(a)) + b)
+
 enum {
-  WHICH_UU = (4 * TYPE_UNSET)  + TYPE_UNSET,
-  WHICH_UD = (4 * TYPE_UNSET)  + TYPE_DOUBLE,
-  WHICH_UQ = (4 * TYPE_UNSET)  + TYPE_QUAT,
-  WHICH_DU = (4 * TYPE_DOUBLE) + TYPE_UNSET,
-  WHICH_DD = (4 * TYPE_DOUBLE) + TYPE_DOUBLE,
-  WHICH_DQ = (4 * TYPE_DOUBLE) + TYPE_QUAT,
-  WHICH_QU = (4 * TYPE_QUAT)   + TYPE_UNSET,
-  WHICH_QD = (4 * TYPE_QUAT)   + TYPE_DOUBLE,
-  WHICH_QQ = (4 * TYPE_QUAT)   + TYPE_QUAT
+  WHICH_UU = make_idx (TYPE_UNSET,  TYPE_UNSET),
+  WHICH_UD = make_idx (TYPE_UNSET,  TYPE_DOUBLE),
+  WHICH_UQ = make_idx (TYPE_UNSET,  TYPE_QUAT),
+  WHICH_DU = make_idx (TYPE_DOUBLE, TYPE_UNSET),
+  WHICH_DD = make_idx (TYPE_DOUBLE, TYPE_DOUBLE),
+  WHICH_DQ = make_idx (TYPE_DOUBLE, TYPE_QUAT),
+  WHICH_QU = make_idx (TYPE_QUAT,   TYPE_UNSET),
+  WHICH_QD = make_idx (TYPE_QUAT,   TYPE_DOUBLE),
+  WHICH_QQ = make_idx (TYPE_QUAT,   TYPE_QUAT)
 } which_e;
 
 class Value
@@ -64,13 +66,10 @@ typedef struct {
   operation fcn;
 } kwd_s;
 
-#define opt_kwd(i) kwds[i].kwdx
-#define opt_fcn(i) kwds[i].fcnx
-
-static int
+static inline int
 which (Value a, Value b)
 {
-  return  4 * a.getType () + b.getType ();
+  return  make_idx (a.getType (), b.getType ());
 }
 
 static void
