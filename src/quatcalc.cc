@@ -94,11 +94,7 @@ do_plusequal (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat av = a.getQuat ();
-      av += b.getQuat ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat () += b.getQuat ()) << endl;
     break;
   case WHICH_QU:
     cout << +a.getQuat () << endl;
@@ -130,11 +126,7 @@ do_minusequal (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat av = a.getQuat ();
-      av -= b.getQuat ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat ()-= b.getQuat ()) << endl;
     break;
   case WHICH_QU:
     cout << +a.getQuat () << endl;
@@ -169,18 +161,10 @@ do_starequal (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat av = a.getQuat ();
-      av *= b.getQuat ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat ()*= b.getQuat ()) << endl;
     break;
   case WHICH_QD:
-    {
-      Quat av = a.getQuat ();
-      av *= b.getDouble ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat ()*= b.getDouble ()) << endl;
     break;
   case WHICH_QU:
     cout << +a.getQuat () << endl;
@@ -215,18 +199,10 @@ do_slashequal (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    {
-      Quat av = a.getQuat ();
-      av /= b.getQuat ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat ()/= b.getQuat ()) << endl;
     break;
   case WHICH_QD:
-    {
-      Quat av = a.getQuat ();
-      av /= b.getDouble ();
-      cout << av << endl;;
-    }
+    cout << (a.getQuat ()/= b.getDouble ()) << endl;
     break;
   case WHICH_QU:
     cout << +a.getQuat () << endl;
