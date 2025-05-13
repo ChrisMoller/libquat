@@ -353,7 +353,7 @@ Quat::qfan (int n, Quat v, Quat w)
     magAxis += axis[i] * axis[i];
   magAxis = sqrt (magAxis);
 
-  if (magAxis > 0.0) {
+  if (n >= 1 || magAxis > 0.0) {
     for (int i = 1; i < 4; i++)		// normalise axis
       axis[i] /= magAxis;
     for (int i = 0; i <= n; i++) {
@@ -370,6 +370,9 @@ Quat::qfan (int n, Quat v, Quat w)
       Quat res = qq * v / qq;
       fan.push_back (res);
     }
+  }
+  else {
+    fan.push_back (v);
   }
 
   return fan;
