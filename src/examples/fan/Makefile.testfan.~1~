@@ -1,0 +1,11 @@
+   CPPFLAGS = -g
+    LDFLAGS =
+       INCS =
+       LIBS =
+
+%.o:%.cc
+	g++ -c $(CPPFLAGS) $<
+
+testfan: testflags.o
+	 g++ -o $@ $(LDFLAGS) $^ $(LIBS)
+

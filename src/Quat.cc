@@ -352,8 +352,6 @@ Quat::qfan (int n, Quat v, Quat w)
     c = -n;
   }
 
-  if (fabs (baseAngle) < 1.0e-5) baseAngle = 2.0 * M_PI;
-  
   vector<double> axis = (v.qcross (w)).qvec ();
   
   double magAxis = 0.0;			// get axis magnitude

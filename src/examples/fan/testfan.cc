@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
-#include "Quat.hh"
+#include "../../Quat.hh"
 
 using namespace std;
 
