@@ -278,7 +278,7 @@ do_ang (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    cout << (a.getQuat ()).qang (b.getQuat ()) << endl;;
+    cout << (a.getQuat ()).qangle (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";
@@ -291,7 +291,7 @@ do_rot (Value a, Value b)
 {
   switch(which (a, b)) {
   case WHICH_QQ:
-    cout << (a.getQuat ()).qrot (b.getQuat ()) << endl;;
+    cout << (a.getQuat ()).qrotate (b.getQuat ()) << endl;;
     break;
   default:
     cout << "invalid args\n";

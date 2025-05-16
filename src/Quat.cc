@@ -325,16 +325,16 @@ Quat::qcross (Quat v)
 }
 
 double
-Quat::qang (Quat v)
+Quat::qangle (Quat v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));
 }
 
 Quat
-Quat::qrot (Quat v)
+Quat::qrotate (Quat v)
 {
-  Quat q =  (*this) * v * ~(*this);
+  Quat q =  v * (*this) / v;
   return q;
 }
 
@@ -345,7 +345,7 @@ Quat::qfan (int n, Quat v, Quat w)
 {
   vector<Quat> fan;
 
-  double baseAngle =  v.qang (w) / 2.0;
+  double baseAngle =  v.qangle (w) / 2.0;
   int c = n;
   if (n < 0) {
     baseAngle - M_PI - baseAngle;

@@ -43,8 +43,8 @@ TEST (23, cout << r.qdot (r);)
 TEST (24, cout << r.qcross (s);)
 TEST (25, cout << r.qcross (r);)
 //TEST (26, cout << r.qrot (s);)
-TEST (27, cout << R2D (r.qang (s));)
-TEST (28, cout << R2D (r.qang (r));)
+TEST (27, cout << R2D (r.qangle (s));)
+TEST (28, cout << R2D (r.qangle (r));)
 TEST (29, cout << r.qstr ();)
 
 typedef void (*fcn_t)();
