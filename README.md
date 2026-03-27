@@ -1,0 +1,2 @@
+# libquat
+A quaternion library.
