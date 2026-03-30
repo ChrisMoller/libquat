@@ -262,7 +262,7 @@ string
 Quat::qstr ()			// stringify
 {
   char *s;
-  ignore = asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", a, b, c, d);
+  asprintf (&s, "[%#08g [%#08g %#08g %#08g]]", a, b, c, d);
   string t (s);
   free (s);
   return t;
@@ -309,10 +309,21 @@ Quat::qdot (Quat &v)
 }
 
 Quat
-Quat::qrot (Quat &v)
+Quat::qrot (const Quat v)
 {
   Quat q =  (*this) * v * ~(*this);
   return q;
+}
+
+vector<Quat>
+Quat::qrot (vector<Quat> &v)
+{
+  vector<Quat> rc;
+  for (const Quat q : v) {
+    Quat r = this->qrot (q);
+    rc.emplace_back (r);
+  }
+  return rc;
 }
 
 Quat

@@ -21,6 +21,7 @@
 #include <string>
 #include <iostream>
 #include <array>
+#include <vector>
 #include <complex>
 
 #include <stdio.h>
@@ -60,6 +61,7 @@ public:
   Quat (double ai);
   Quat (double *v);
   Quat (double theta, double *v);
+
   double scalar () {return a;}
   double W () {return a;}
   double X () {return b;}
@@ -108,7 +110,8 @@ public:
   double	qdot (Quat &v);
   Quat		qcross (Quat &v);
   double	qang (Quat &v);
-  Quat		qrot (Quat &v);		// v.qrot (w) rotate v by w
+  Quat		qrot (const Quat v);		// v.qrot (w) rotate v by w
+  vector<Quat>	qrot (vector<Quat> &v);	// v.qrot (w) rotate v by w
   
   Rotation	*toRotation ();
 
