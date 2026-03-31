@@ -18,15 +18,16 @@
 */
 
 #pragma once
+
 #include <string>
 #include <iostream>
 #include <array>
 #include <vector>
 #include <complex>
+using namespace std;
 
 #include <stdio.h>
 
-using namespace std;
 
 // quat <> mx conversion
 // https://www.johndcook.com/blog/2025/05/07/quaternions-and-rotation-matrices/

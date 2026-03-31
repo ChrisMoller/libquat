@@ -320,7 +320,8 @@ Quat::qrot (vector<Quat> &v)
 {
   vector<Quat> rc;
   for (const Quat q : v) {
-    Quat r = this->qrot (q);
+    //    Quat r = this->qrot (q);
+    Quat r =  (*this) * q * ~(*this);
     rc.emplace_back (r);
   }
   return rc;
