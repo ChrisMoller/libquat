@@ -180,12 +180,20 @@ Quat::operator/=(Quat &v)	// divide-assign
 Quat
 Quat::operator/(double v)	// divide by double
 {
+#if 1
+  a = a / v;
+  b = b / v;
+  c = c / v;
+  d = d / v;
+  return *this;
+#else
   Quat s;
   s.a = a / v;
   s.b = b / v;
   s.c = c / v;
   s.d = d / v;
   return s;
+#endif
 }
 
 Quat
@@ -320,7 +328,6 @@ Quat::qrot (vector<Quat> &v)
 {
   vector<Quat> rc;
   for (const Quat q : v) {
-    //    Quat r = this->qrot (q);
     Quat r =  (*this) * q * ~(*this);
     rc.emplace_back (r);
   }
