@@ -346,7 +346,7 @@ Quat::qcross (Quat &v)
 }
 
 double
-Quat::qang (Quat &v)
+Quat::qang (Quat v)
 {
   double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
   return acos (dt / ((+*this) * +v));

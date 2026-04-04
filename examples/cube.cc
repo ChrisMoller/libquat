@@ -57,6 +57,13 @@ getDir (int leg1, int corner, int leg2)
            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ***/
 
+static void
+show_ang (vector<Quat> rr, int v0, int v1, int v2)
+{
+  double rang = (rr[0] - rr[3]).qang (rr[2] - rr[3]);
+  cout << R2D (rang) << endl;
+}
+
 void
 draw_cube (double ang, int axisIndex)
 {
@@ -69,8 +76,10 @@ draw_cube (double ang, int axisIndex)
   cout << "right  " << getDir (VTX_RLR, VTX_RUR, VTX_RUF) << endl;
 #endif
 
-  Quat rotator (ang, axes[axisIndex]);
+  //  Quat rotator (ang, axes[axisIndex]);
+  Quat rotator (0.0, axes[axisIndex]);
   vector<Quat> rr = rotator.qrot (cube);
+  show_ang (rr, 0, 3, 2);
 
 #define LEFT__LOWER_REAR  rr[0].X (),  rr[0].Y (), rr[0].Z ()
 #define RIGHT_LOWER_REAR  rr[1].X (),  rr[1].Y (), rr[0].Z ()
