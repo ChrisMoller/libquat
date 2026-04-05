@@ -348,8 +348,10 @@ Quat::qcross (Quat &v)
 double
 Quat::qang (Quat v)
 {
-  double dt = (a * v.a) + (b * v.b) + (c * v.c) + (d * v.d);
-  return acos (dt / ((+*this) * +v));
+  double dt = (b * v.b) + (c * v.c) + (d * v.d);
+  double m1 = sqrt (pow (b, 2.0) + pow (c, 2.0) + pow (d, 2.0));
+  double m2 = sqrt (pow (v.b, 2.0) + pow (v.c, 2.0) + pow (v.d, 2.0));
+  return acos (dt / (m1 * m2));
 }
 
 Rotation *

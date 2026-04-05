@@ -7,7 +7,9 @@
 #include <string.h>
 #include <iostream>
 
+#include "plato.hh"
 #include "cube.hh"
+#include "octahedron.hh"
 #include "icosahedron.hh"
 
 #define EYE_RADIUS 3.0
@@ -59,6 +61,13 @@ int state = RUN;
 double x_off = 0.0;
 double y_off = 0.0;
 double z_off = EYE_RADIUS;
+
+void
+show_ang (int ix, vector<Quat> rr, int v0, int v1, int v2)
+{
+  double rang = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
+  cout << ix << " " << v0 << " " << v1 << " " << v2 << " "<< R2D (rang) << endl;
+}
 
 void
 cursor_position_callback (GLFWwindow* window, double x, double y)
@@ -214,6 +223,9 @@ main (int ac, char *av[])
 	switch (*optarg) {
 	case 'c':
 	  func = draw_cube;
+	  break;
+	case 'o':
+	  func = draw_octahedron;
 	  break;
 	case 'i':
 	  func = draw_icosahedron;

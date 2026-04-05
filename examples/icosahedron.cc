@@ -4,7 +4,9 @@
 #include <glm/glm.hpp>
 #endif
 #include <vector>
-#include "Quat.hh"
+#include <Quat.hh>
+
+#include "plato.hh"
 
 #ifdef USE_FTGL
 using namespace FTGL;
@@ -19,7 +21,7 @@ extern double z_off;
 #endif
 
 #define SCALE 2.0
-bool scale_done = false;
+static bool scale_done = false;
 
 
 vector<Quat> icosahedron = {
@@ -82,29 +84,79 @@ draw_icosahedron (GLdouble ang, int axisIndex)
 #define VERT_10  rr[10].X (),  rr[10].Y (), rr[10].Z ()
 #define VERT_11  rr[11].X (),  rr[11].Y (), rr[11].Z ()
 
+#if 0	// okay
+  show_ang (icosahedron, 0, 4, 8);		// 0
+  show_ang (icosahedron, 4, 8, 0);
+  show_ang (icosahedron, 8, 0, 4);
+  show_ang (icosahedron, 3, 1, 0);
+#endif
+  
+#if 0	// all wrong
+  show_ang (icosahedron, 1, 6, 10);		// 0
+  show_ang (icosahedron, 6, 10, 1);		// 0
+  show_ang (icosahedron, 10, 1, 6);		// 0
+
+  show_ang (icosahedron, 0, 2,  5);		// 0
+  show_ang (icosahedron, 2, 5, 0);		// 0
+  show_ang (icosahedron, 5, 0, 2);		// 0
+
+
+  show_ang (icosahedron, 1, 0, 3);
+  show_ang (icosahedron, 0, 3, 1);
+  show_ang (icosahedron, 0, 8, 2);		// 1
+  show_ang (icosahedron, 8, 2, 0);
+  show_ang (icosahedron, 2, 0, 8);
+
+  show_ang (icosahedron, 0, 5, 9);		// 2
+  show_ang (icosahedron, 5, 9, 0);
+  show_ang (icosahedron, 9, 0, 5);
+  
+  show_ang (icosahedron, 0, 9, 4);		// 3
+  show_ang (icosahedron, 9, 4, 0);	
+  show_ang (icosahedron, 4, 0, 9);	
+
+  show_ang (icosahedron, 1, 11, 7);	// 6
+  show_ang (icosahedron, 11, 7, 1);
+  show_ang (icosahedron, 7, 1, 11);
+  
+  show_ang (icosahedron, 1, 3, 11);	// 5
+  show_ang (icosahedron, 3, 11, 1);	// 5
+  show_ang (icosahedron, 11, 1, 3);	// 5
+  
+  show_ang (icosahedron, 1, 7, 6);	// 5
+  show_ang (icosahedron, 7, 6, 1);	// 5
+  show_ang (icosahedron, 6, 1, 7);	// 5
+  
+  show_ang (icosahedron, 5, 2, 10);	// 5
+  show_ang (icosahedron, 2, 10, 5);	// 5
+  show_ang (icosahedron, 10, 5, 2);	// 5
+#endif
+  
+
   glBegin (GL_TRIANGLES); // t 0
-  glColor3d (0.898438, 0.0976562, 0.292969);	// red
+    glColor3d (0.898438, 0.0976562, 0.292969);	// red
     glVertex3d (VERT_00);
     glVertex3d (VERT_04);
     glVertex3d (VERT_08);
   glEnd ();
 
+#if 0
   glBegin (GL_TRIANGLES); // t 1
-  glColor3d (0.234375, 0.703125, 0.292969);	// green
+    glColor3d (0.234375, 0.703125, 0.292969);	// green
     glVertex3d (VERT_00);
     glVertex3d (VERT_08);
     glVertex3d (VERT_02);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); // t 3		// blue
+  glBegin (GL_TRIANGLES); // t 2		// blue
     glColor3d (0.261719, 0.386719, 0.84375);
     glVertex3d (VERT_00);
     glVertex3d (VERT_05);
     glVertex3d (VERT_09);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); // t 4
-  glColor3d (0.957031, 0.507812, 0.191406);	// orange
+  glBegin (GL_TRIANGLES); // t 3
+    glColor3d (0.957031, 0.507812, 0.191406);	// orange
     glVertex3d (VERT_00);
     glVertex3d (VERT_09);
     glVertex3d (VERT_04);
@@ -117,7 +169,6 @@ draw_icosahedron (GLdouble ang, int axisIndex)
     glVertex3d (VERT_03);
   glEnd ();
 
-#if 0
   glBegin (GL_TRIANGLES); // t 6
   glColor3d (0.257812, 0.828125, 0.953125);	// cyan
     glVertex3d (VERT_01);
@@ -145,6 +196,7 @@ draw_icosahedron (GLdouble ang, int axisIndex)
     glVertex3d (VERT_02);
     glVertex3d (VERT_05);
   glEnd ();
+#endif
 
   glBegin (GL_TRIANGLES); // t 7
   glColor3d (0.9375, 0.195312, 0.898438);	// cot pink
@@ -222,5 +274,4 @@ draw_icosahedron (GLdouble ang, int axisIndex)
     glVertex3d (VERT_11);
     glVertex3d (VERT_07);
   glEnd ();
-#endif
 }

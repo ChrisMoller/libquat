@@ -1,4 +1,4 @@
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef CUBE_HH
+#define CUBE_HH
 void draw_cube (GLdouble ang, int axisIndex);
-#endif // CUBE_H
+#endif // CUBE_HH

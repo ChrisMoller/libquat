@@ -20,10 +20,12 @@
 %.o:%.cc
 	g++ -c $(CFLAGS) $(INCS) $<
 
-tryglfw2: tryglfw2.o cube.o icosahedron.o
+plato: plato.o cube.o octahedron.o icosahedron.o
 	g++ -o $@ $^ $(LIBS) $(LDFLAGS)
 
 cube.o: cube.cc cube.hh
+
+octahedron.o: octahedron.cc octahedron.hh
 
 icosahedron.o: icosahedron.cc icosahedron.hh
 
@@ -31,4 +33,4 @@ clean:
 	rm -f *.o
 
 veryclean: clean
-	rm -f tryglfw tryglfw2
+	rm -f plato
