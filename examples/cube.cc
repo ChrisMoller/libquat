@@ -95,7 +95,7 @@ draw_cube (double ang, int axisIndex)
   show_ang (2, rr, RLF, LLF, LLR);		// bottom
   show_ang (12, rr, LLF, LLR, RLR);
   
-  show_ang (3, rr, RUF, LUF, LUR);		//top
+  show_ang (3, rr, RUF, LUF, LUR);		// top
   show_ang (13, rr, LUF, LUR, RUR);
   
   show_ang (4, rr, LUF, LUR, LLR);		// left
@@ -114,9 +114,6 @@ draw_cube (double ang, int axisIndex)
 #define RIGHT_UPPER_FRONT rr[6].X (),  rr[6].Y (), rr[6].Z ()
 #define LEFT__UPPER_FRONT rr[7].X (),  rr[7].Y (), rr[7].Z ()
 
-  const float green[]   = {0.0f, 1.0f, 0.0f, 1.0f};
-  const float magenta[] = {1.0f, 0.0f, 1.0f, 1.0f};
-  const float black[]   = {0.0f, 0.0f, 0.0f, 1.0f};
 #if 1
   glBegin (GL_QUADS);			// back
   glColor3f (1.0f, 0.0f, 0.0f);

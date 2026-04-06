@@ -335,7 +335,7 @@ Quat::qrot (vector<Quat> &v)
 }
 
 Quat
-Quat::qcross (Quat &v)
+Quat::qcross (Quat v)
 {
   Quat s;
   s.a = 0.0;

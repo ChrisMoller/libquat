@@ -20,8 +20,10 @@
 %.o:%.cc
 	g++ -c $(CFLAGS) $(INCS) $<
 
-plato: plato.o cube.o octahedron.o icosahedron.o
+plato: plato.o tetrahedron.o cube.o octahedron.o icosahedron.o
 	g++ -o $@ $^ $(LIBS) $(LDFLAGS)
+
+tetrahedron.o: tetrahedron.cc tetrahedron.hh
 
 cube.o: cube.cc cube.hh
 

@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "plato.hh"
+#include "tetrahedron.hh"
 #include "cube.hh"
 #include "octahedron.hh"
 #include "icosahedron.hh"
@@ -65,8 +66,10 @@ double z_off = EYE_RADIUS;
 void
 show_ang (int ix, vector<Quat> rr, int v0, int v1, int v2)
 {
-  double rang = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
-  cout << ix << " " << v0 << " " << v1 << " " << v2 << " "<< R2D (rang) << endl;
+  double rang  = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
+  Quat   cross = (rr[v0] - rr[v1]).qcross (rr[v2] - rr[v1]);
+  cout << ix << " " << v0 << " " << v1 << " " << v2 << " "
+       << R2D (rang) << " " << cross << endl;
 }
 
 void
@@ -221,6 +224,9 @@ main (int ac, char *av[])
 	break;
       case 's':
 	switch (*optarg) {
+	case 't':
+	  func = draw_tetrahedron;
+	  break;
 	case 'c':
 	  func = draw_cube;
 	  break;

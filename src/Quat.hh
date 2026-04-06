@@ -109,7 +109,7 @@ public:
   double        qscalar ();		// extract scalar component
 
   double	qdot (Quat &v);
-  Quat		qcross (Quat &v);
+  Quat		qcross (Quat v);
   double	qang (Quat v);
   Quat		qrot (const Quat v);		// v.qrot (w) rotate v by w
   vector<Quat>	qrot (vector<Quat> &v);	// v.qrot (w) rotate v by w
