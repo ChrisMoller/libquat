@@ -11,6 +11,7 @@
 #include "tetrahedron.hh"
 #include "cube.hh"
 #include "octahedron.hh"
+#include "dodecahedron.hh"
 #include "icosahedron.hh"
 
 #define EYE_RADIUS 3.0
@@ -57,8 +58,10 @@ drawit funcs[] = {
 #define CUBE		1
   &draw_octahedron,
 #define OCTAHEDRON	2
+  &draw_dodecahedron,
+#define DODECAHEDRON	3
   &draw_icosahedron
-#define ICOSAHEDRON	3
+#define ICOSAHEDRON	4
 };
 int nr_funcs = sizeof(funcs)/sizeof(drawit);
 bool func_locked = false;
@@ -293,6 +296,9 @@ main (int ac, char *av[])
 	  break;
 	case 'o':
 	  func_idx = OCTAHEDRON;
+	  break;
+	case 'd':
+	  func_idx = DODECAHEDRON;
 	  break;
 	case 'i':
 	  func_idx = ICOSAHEDRON;
