@@ -7,18 +7,33 @@
 #define  PHI 1.618033989
 #define IPHI 0.618033989
 
+/***
+
+The specific set of 20 vertex coordinates is:
+*   **$$(\pm 1, \pm 1, \pm 1)$$**:     The 8 vertices forming a cube (e.g., $$(1,1,1), (1,1,-1), (1,-1,1), \dots$$).
+*   **$$(0, \pm \phi, \pm 1/\phi)$$**: The 4 vertices where one coordinate is 0, and the others involve $$\phi$$ and $$1/\phi$$ (e.g., $$(0, \phi, 1/\phi), (0, \phi, -1/\phi), \dots$$).
+*   **$$(\pm 1/\phi, 0, \pm \phi)$$**: The 4 vertices where the middle coordinate is 0.
+*   **$$(\pm \phi, \pm 1/\phi, 0)$$**: The 4 vertices where the last coordinate is 0.
+
+Note that $$1/\phi = \phi - 1 \approx 0.618$$. These 20 points represent the corners where three pentagonal faces meet.
+***/
+
 #define SCALE 2.0
 static bool scale_done = false;
 
 vector<Quat> dodecahedron = {
-  Quat (0,  1.0,  1.0,  1.0),	// 0
-  Quat (0,  1.0,  1.0, -1.0),	// 1
-  Quat (0,  1.0, -1.0,  1.0),	// 2
-  Quat (0,  1.0, -1.0, -1.0),	// 3
-  Quat (0, -1.0,  1.0,  1.0),	// 4
-  Quat (0, -1.0,  1.0, -1.0),	// 5
-  Quat (0, -1.0, -1.0,  1.0),	// 6
-  Quat (0, -1.0, -1.0, -1.0),	// 7
+  Quat (0,  1.0,   1.0,   1.0),	//  0
+  Quat (0,  1.0,   1.0,  -1.0),	//  1
+  Quat (0,  1.0,  -1.0,   1.0),	//  2
+  Quat (0,  1.0,  -1.0,  -1.0),	//  3
+  Quat (0, -1.0,   1.0,   1.0),	//  4
+  Quat (0, -1.0,   1.0,  -1.0),	//  5
+  Quat (0, -1.0,  -1.0,   1.0),	//  6
+  Quat (0, -1.0,  -1.0,  -1.0),	//  7
+  Quat (0,  0.0,  PHI1,  IPHI),	//  8
+  Quat (0,  0.0,  PHI1, -IPHI),	//  9
+  Quat (0,  0.0, -PHI1,  IPHI),	// 10
+  Quat (0,  0.0, -PHI1, -IPHI),	// 11
 };
 
 extern double axes[][3];
