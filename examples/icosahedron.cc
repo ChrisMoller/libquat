@@ -85,11 +85,38 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   }
 #endif
 
+#if 0
+  static bool didit = false;
+  if (!didit) {
+    didit = true;
+    show_ang (icosahedron, 0,  8,  2);	//  1
+    show_ang (icosahedron, 0,  2,  9);	//  2
+    show_ang (icosahedron, 0,  6,  4);	//  3
+    show_ang (icosahedron, 0,  4,  8);	//  4
+    show_ang (icosahedron, 0,  9,  6);	//  5
+    show_ang (icosahedron, 1,  3, 10);	//  6
+    show_ang (icosahedron, 1, 11, 3);	//  7
+    show_ang (icosahedron, 1,  4,  6);	//  8
+    show_ang (icosahedron, 1, 10,  4);	//  9
+    show_ang (icosahedron, 1,  6, 11);	// 10
+    show_ang (icosahedron, 2,  5,  7);	// 11
+    show_ang (icosahedron, 2,  8,  5);	// 12
+    show_ang (icosahedron, 2,  7,  9);	// 13
+    show_ang (icosahedron, 3,  7,  5);	// 14
+    show_ang (icosahedron, 3,  5, 10);	// 15
+    show_ang (icosahedron, 3, 11,  7);	// 16
+    show_ang (icosahedron, 4, 10,  8);	// 17
+    show_ang (icosahedron, 5,  8, 10);	// 18
+    show_ang (icosahedron, 6,  8, 11);	// 19
+    show_ang (icosahedron, 7, 11,  9);	// 20
+  }
+#endif
+  
   glBegin (GL_TRIANGLES); // t 1
     glColor3d (0.898438, 0.0976562, 0.292969);	// red
     glVertex3d (VERT_00);
-    glVertex3d (VERT_02);
     glVertex3d (VERT_08);
+    glVertex3d (VERT_02);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 2
@@ -102,8 +129,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 3		// blue
     glColor3d (0.261719, 0.386719, 0.84375);
     glVertex3d (VERT_00);
-    glVertex3d (VERT_04);
     glVertex3d (VERT_06);
+    glVertex3d (VERT_04);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 4
@@ -116,8 +143,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 5
     glColor3d (0.976562, 0.742188, 0.828125);	// skin
     glVertex3d (VERT_00);
-    glVertex3d (VERT_06);
     glVertex3d (VERT_09);
+    glVertex3d (VERT_06);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 6
@@ -130,8 +157,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 7
   glColor3d (0.566406, 0.117188, 0.703125);	// purple
     glVertex3d (VERT_01);
-    glVertex3d (VERT_03);
     glVertex3d (VERT_11);
+    glVertex3d (VERT_03);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 8
@@ -144,8 +171,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 9		// yellow
     glColor3d (0.996094, 0.878906, 0.0976562);
     glVertex3d (VERT_01);
-    glVertex3d (VERT_04);
     glVertex3d (VERT_10);
+    glVertex3d (VERT_04);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 10
@@ -165,8 +192,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 12
   glColor3d (0.601562, 0.386719, 0.140625);	// pale yellow
     glVertex3d (VERT_02);
-    glVertex3d (VERT_05);
     glVertex3d (VERT_08);
+    glVertex3d (VERT_05);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 13
@@ -179,8 +206,8 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 14
   glColor3d (0.273438, 0.597656, 0.5625);	// sage
     glVertex3d (VERT_03);
-    glVertex3d (VERT_05);
     glVertex3d (VERT_07);
+    glVertex3d (VERT_05);
   glEnd ();
   
   glBegin (GL_TRIANGLES); // t 15
@@ -193,15 +220,15 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 16
   glColor3d (0.664062, 0.996094, 0.761719);	// light green
     glVertex3d (VERT_03);
-    glVertex3d (VERT_07);
     glVertex3d (VERT_11);
+    glVertex3d (VERT_07);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 17
   glColor3d (0.996094, 0.84375, 0.691406);	// yellowish
     glVertex3d (VERT_04);
-    glVertex3d (VERT_08);
     glVertex3d (VERT_10);
+    glVertex3d (VERT_08);
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 18
@@ -221,7 +248,7 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glBegin (GL_TRIANGLES); // t 20
   glColor3d (0.5, 0.5, 0);	// yellowish green
     glVertex3d (VERT_07);
-    glVertex3d (VERT_09);
     glVertex3d (VERT_11);
+    glVertex3d (VERT_09);
   glEnd ();
 }

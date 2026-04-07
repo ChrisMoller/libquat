@@ -65,13 +65,28 @@ draw_octahedron (double ang, int axisIndex)
 #define VERT_02 rr[2].X (),  rr[2].Y (), rr[0].Z ()
 #define VERT_03 rr[3].X (),  rr[3].Y (), rr[0].Z ()
 #define VERT_04 rr[4].X (),  rr[4].Y (), rr[4].Z ()
-#define VERT_05 rr[5].X (),  rr[5].Y (), rr[5].Z ()  
+#define VERT_05 rr[5].X (),  rr[5].Y (), rr[5].Z ()
+
+#if 0
+  static bool didit = false;
+  if (!didit) {
+    didit = true;
+    show_ang (octahedron, 0, 4, 2);
+    show_ang (octahedron, 0, 2, 5);
+    show_ang (octahedron, 0, 3, 4);
+    show_ang (octahedron, 0, 5, 3);
+    show_ang (octahedron, 1, 2, 4);
+    show_ang (octahedron, 1, 5, 2);
+    show_ang (octahedron, 1, 4, 3);
+    show_ang (octahedron, 1, 3, 5);
+  }
+#endif
 
   glBegin (GL_TRIANGLES); 	// 1 top left front
     glColor3d (1.0, 0.0, 0.0);	// red
     glVertex3d (VERT_00);
-    glVertex3d (VERT_02);
     glVertex3d (VERT_04);
+    glVertex3d (VERT_02);
   glEnd ();
 
   glBegin (GL_TRIANGLES); 	// 2 top left front
@@ -91,8 +106,8 @@ draw_octahedron (double ang, int axisIndex)
   glBegin (GL_TRIANGLES); 	// 4 top left front
   glColor3d (1.0, 1.0, 0.0);	// yellow
     glVertex3d (VERT_00);
-    glVertex3d (VERT_03);
     glVertex3d (VERT_05);
+    glVertex3d (VERT_03);
   glEnd ();
 
   glBegin (GL_TRIANGLES); 	// 5 top left front
@@ -105,15 +120,15 @@ draw_octahedron (double ang, int axisIndex)
   glBegin (GL_TRIANGLES); 	// 6 top left front
   glColor3d (1.0, 0.5, 0.5);	// pink
     glVertex3d (VERT_01);
-    glVertex3d (VERT_02);
     glVertex3d (VERT_05);
+    glVertex3d (VERT_02);
   glEnd ();
 
   glBegin (GL_TRIANGLES); 	// 7 top left front
   glColor3d (0.5, 0.5, 0.5);	// grey
     glVertex3d (VERT_01);
-    glVertex3d (VERT_03);
     glVertex3d (VERT_04);
+    glVertex3d (VERT_03);
   glEnd ();
 
   glBegin (GL_TRIANGLES); 	// 7 top left front

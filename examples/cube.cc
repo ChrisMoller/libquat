@@ -5,6 +5,7 @@
 #include "plato.hh"
 
 vector<Quat> cube = {
+#if 0
   Quat (0, -0.4,  0.4, -0.4),	// left  lower rear
   Quat (0,  0.4,  0.4, -0.4),	// right lower rear
   Quat (0,  0.4, -0.4, -0.4),	// right upper rear
@@ -13,6 +14,15 @@ vector<Quat> cube = {
   Quat (0,  0.4,  0.4,  0.4),    // right lower front
   Quat (0,  0.4, -0.4,  0.4),    // right upper front
   Quat (0, -0.4, -0.4,  0.4)     // left  upper front
+#endif
+  Quat (0, -0.4, -0.4, -0.4),	// left  lower rear
+  Quat (0,  0.4, -0.4, -0.4),	// right lower rear
+  Quat (0,  0.4,  0.4, -0.4),	// right upper rear
+  Quat (0, -0.4,  0.4, -0.4),	// left  upper rear
+  Quat (0, -0.4, -0.4,  0.4),    // left  lower front
+  Quat (0,  0.4, -0.4,  0.4),    // right lower front
+  Quat (0,  0.4,  0.4,  0.4),    // right upper front
+  Quat (0, -0.4,  0.4,  0.4)     // left  upper front
 };
 
 enum {
@@ -114,8 +124,32 @@ draw_cube (double ang, int axisIndex)
 #define RIGHT_UPPER_FRONT rr[6].X (),  rr[6].Y (), rr[6].Z ()
 #define LEFT__UPPER_FRONT rr[7].X (),  rr[7].Y (), rr[7].Z ()
 
+#if 0
+  static bool didit = false;
+  if (!didit) {
+    didit = true;
+    show_ang (cube, LUR, RUR, RLR);	// 0
+    show_ang (cube, RUR, RLR, LLR);
+    
+    show_ang (cube, RUF, LUF,LLF);	// 1
+    show_ang (cube, LUF, LLF, RLF);
+
+    show_ang (cube, RLF, LLF, LLR);	// 2
+    show_ang (cube, LLF, LLR, RLR);
+
+    show_ang (cube, RUF, RUR, LUR);	// 3
+    show_ang (cube, RUR, LUR, LUF);
+
+    show_ang (cube, LUF, LUR, LLR);	// 4
+    show_ang (cube, LUR, LLR, LLF);
+
+    show_ang (cube, RUR, RUF, RLF);	// 5
+    show_ang (cube, RUF, RLF, RLR);
+  }
+#endif
+    
 #if 1
-  glBegin (GL_QUADS);			// back
+  glBegin (GL_QUADS);			// 0 back
   glColor3f (1.0f, 0.0f, 0.0f);
   glVertex3d (LEFT__UPPER_REAR);
   glVertex3d (RIGHT_UPPER_REAR);
@@ -123,7 +157,7 @@ draw_cube (double ang, int axisIndex)
   glVertex3d (LEFT__LOWER_REAR);
   glEnd ();
   
-  glBegin (GL_QUADS);			// front
+  glBegin (GL_QUADS);			// 1 front
   glColor3f (0.0f, 1.0f, 1.0f);
   glVertex3d (RIGHT_UPPER_FRONT);
   glVertex3d (LEFT__UPPER_FRONT);
@@ -133,7 +167,7 @@ draw_cube (double ang, int axisIndex)
 #endif
 
 #if 1
-  glBegin (GL_QUADS);			// bottom
+  glBegin (GL_QUADS);			// 2 bottom
   glColor3f (0.0f, 1.0f, 0.0f);
   glVertex3d (RIGHT_LOWER_FRONT);
   glVertex3d (LEFT__LOWER_FRONT);
@@ -141,17 +175,17 @@ draw_cube (double ang, int axisIndex)
   glVertex3d (RIGHT_LOWER_REAR);
   glEnd ();
 
-  glBegin (GL_QUADS);			//  top
+  glBegin (GL_QUADS);			//  3 top
   glColor3f (1.0f, 0.0f, 1.0f);
   glVertex3d (RIGHT_UPPER_FRONT);
-  glVertex3d (LEFT__UPPER_FRONT);
-  glVertex3d (LEFT__UPPER_REAR);
   glVertex3d (RIGHT_UPPER_REAR);
+  glVertex3d (LEFT__UPPER_REAR);
+  glVertex3d (LEFT__UPPER_FRONT);
   glEnd ();
 #endif
 
 #if 1
-  glBegin (GL_QUADS);			//  left
+  glBegin (GL_QUADS);			// 4 left
   glColor3f (0.0f, 0.0f, 1.0f);
   glVertex3d (LEFT__UPPER_FRONT);
   glVertex3d (LEFT__UPPER_REAR);
@@ -159,7 +193,7 @@ draw_cube (double ang, int axisIndex)
   glVertex3d (LEFT__LOWER_FRONT);
   glEnd ();
 
-  glBegin (GL_QUADS);			// right
+  glBegin (GL_QUADS);			// 5 right
   glColor3f (1.0f, 1.0f, 0.0f);
   glVertex3d (RIGHT_UPPER_REAR);
   glVertex3d (RIGHT_UPPER_FRONT);

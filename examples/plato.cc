@@ -50,7 +50,6 @@ FILE* ffmpeg = nullptr;
 
 typedef void (*drawit) (GLdouble ang, int axisIndex);
 
-#if 1
 drawit funcs[] = {
   &draw_tetrahedron,
 #define TETRAHEDRON	0
@@ -63,11 +62,8 @@ drawit funcs[] = {
 };
 int nr_funcs = sizeof(funcs)/sizeof(drawit);
 bool func_locked = false;
-
-int func_idx = CUBE;
-#else
-drawit func = draw_cube;
-#endif
+#define FUNC_IVAL	10.
+int func_idx = TETRAHEDRON;
 
 enum {
   STOPPED,
@@ -82,7 +78,7 @@ double y_off = 0.0;
 double z_off = EYE_RADIUS;
 
 void
-show_ang (int x0, int x1, int x2, vector<Quat> rr, int v0, int v1, int v2)
+show_ang (vector<Quat> rr, int v0, int v1, int v2)
 {
   double rang  = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
   double m0 = +(rr[v0] - rr[v1]);
@@ -90,12 +86,12 @@ show_ang (int x0, int x1, int x2, vector<Quat> rr, int v0, int v1, int v2)
   double m2 = +(rr[v2] - rr[v0]);
   Quat ctr = (rr[v0] + rr[v1] + rr[v2]) / 3.0;
   Quat   cross = (rr[v0] - rr[v1]).qcross (rr[v2] - rr[v1]);
-  if (m1 < 1.0) {
-#if 0
+  //  if (m1 < 1.0) {
+#if 1
     fprintf (stdout,
-	     "%06d  %02d %02d %02d (%g %g %g) W=%+g %3g\n",
-	     (1000 * x0) + (100 * x1) + x2,   v0,  v1,  v2, m0, m1, m2,
-	     (ctr/cross).W (),
+	     "%02d %02d %02d (%g %g %g) W = %s  %3g\n",
+	     v0,  v1,  v2, m0, m1, m2,
+	     (ctr/cross).qstr ().c_str (),
 	     R2D (rang));
 #else
     fprintf (stdout,
@@ -104,7 +100,7 @@ show_ang (int x0, int x1, int x2, vector<Quat> rr, int v0, int v1, int v2)
 	     (ctr/cross).W (),
 	     R2D (rang));
 #endif
-  }
+    //}
 #if 0
   cout << ix << " " << v0 << " " << v1 << " " << v2 << " "
     //       << " " << cross
@@ -191,7 +187,7 @@ do_render (double &start_time)
 {
   if (!func_locked) {
     double now =  glfwGetTime ();
-    if ((now - start_time) > 5.0) {
+    if ((now - start_time) > FUNC_IVAL) {
       start_time = now;
       if (++func_idx >= nr_funcs)
 	func_idx = 0;
@@ -349,11 +345,9 @@ main (int ac, char *av[])
 
   glMatrixMode(GL_MODELVIEW);
   glDepthFunc(GL_LESS);
-#if 0
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glFrontFace(GL_CCW); // or GL_CW depending on your vertex order
-#endif
 
   render ();
 
