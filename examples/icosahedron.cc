@@ -64,21 +64,6 @@ draw_icosahedron (GLdouble ang, int axisIndex)
       icosahedron[i] /= SCALE;
     }
   }
-#if 0
-  if (!done_it) {
-    done_it = true;
-    for (int i = 0; i < 12; i++) {
-      for (int j = 0; j < 12; j++) {
-	for (int k = 0; k < 12; k++) {
-	  if ((j != i) && (k != i) && (k != j)) {
-	    show_ang (i, j, k, icosahedron, i, j, k);
-	  }
-	}
-      }
-    }
-  }
-  exit (1);
-#endif
  
   Quat rotator (ang, axes[axisIndex]);
   vector<Quat> rr = rotator.qrot (icosahedron);
@@ -99,56 +84,6 @@ draw_icosahedron (GLdouble ang, int axisIndex)
     glPopMatrix();
   }
 #endif
-  
-
-#if 0	// okay
-  show_ang (icosahedron, 0, 4, 8);		// 0
-  show_ang (icosahedron, 4, 8, 0);
-  show_ang (icosahedron, 8, 0, 4);
-  show_ang (icosahedron, 3, 1, 0);
-  
-  show_ang (0, icosahedron, 1, 6, 10);		// 0
-  show_ang (1, icosahedron, 6, 10, 1);		// 0
-  show_ang (2, icosahedron, 10, 1, 6);		// 0
-
-  show_ang (icosahedron, 0, 2,  5);		// 0
-  show_ang (icosahedron, 2, 5, 0);		// 0
-  show_ang (icosahedron, 5, 0, 2);		// 0
-
-
-  show_ang (icosahedron, 1, 0, 3);
-  show_ang (icosahedron, 0, 3, 1);
-  show_ang (icosahedron, 0, 8, 2);		// 1
-  show_ang (icosahedron, 8, 2, 0);
-  show_ang (icosahedron, 2, 0, 8);
-
-  show_ang (icosahedron, 0, 5, 9);		// 2
-  show_ang (icosahedron, 5, 9, 0);
-  show_ang (icosahedron, 9, 0, 5);
-  
-  show_ang (icosahedron, 0, 9, 4);		// 3
-  show_ang (icosahedron, 9, 4, 0);	
-  show_ang (icosahedron, 4, 0, 9);	
-
-  show_ang (icosahedron, 1, 11, 7);	// 6
-  show_ang (icosahedron, 11, 7, 1);
-  show_ang (icosahedron, 7, 1, 11);
-  
-  show_ang (icosahedron, 1, 3, 11);	// 5
-  show_ang (icosahedron, 3, 11, 1);	// 5
-  show_ang (icosahedron, 11, 1, 3);	// 5
-  
-  show_ang (icosahedron, 1, 7, 6);	// 5
-  show_ang (icosahedron, 7, 6, 1);	// 5
-  show_ang (icosahedron, 6, 1, 7);	// 5
-  
-  show_ang (icosahedron, 5, 2, 10);	// 5
-  show_ang (icosahedron, 2, 10, 5);	// 5
-  show_ang (icosahedron, 10, 5, 2);	// 5
-#endif
-
-
-  
 
   glBegin (GL_TRIANGLES); // t 1
     glColor3d (0.898438, 0.0976562, 0.292969);	// red

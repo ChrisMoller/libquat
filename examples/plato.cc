@@ -117,14 +117,11 @@ void
 cursor_position_callback (GLFWwindow* window, double x, double y)
 {
   if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    // cout << x << " " << y << endl;
     double lng = M_PI * ((double)(x - width/2))  / (double)(width/2);
     double lat = M_PI * ((double)(y - height/2)) / (double)(height/2);
-    //    cout << R2D (lat) << " " << R2D (lng) << endl;
     double z_off = EYE_RADIUS * cos (lat) * cos (lng);
     double x_off = EYE_RADIUS * cos (lat) * sin (lng);
     double y_off = EYE_RADIUS * sin (lat);
-    //    cout << x_off << " " << y_off << " " << z_off << endl;
     glLoadIdentity();
     gluLookAt(x_off, y_off, z_off,	// eye
 	      0.0, 0.0, 0.0,	// lookat
@@ -187,41 +184,55 @@ key_callback (GLFWwindow* window, int key, int scancode,
     state = STEP_BACKWARD;
   }
 }
+    
 
-void render()
+void
+do_render (double &start_time)
+{
+  if (!func_locked) {
+    double now =  glfwGetTime ();
+    if ((now - start_time) > 5.0) {
+      start_time = now;
+      if (++func_idx >= nr_funcs)
+	func_idx = 0;
+    }	
+  }
+    
+  if (state != STOPPED) {
+    ang += (state == STEP_BACKWARD) ? -0.01 : 0.01;
+    if (ang > 2.0 * M_PI) ang -= 2.0 * M_PI;
+    else if (ang < 0.0) ang += 2.0 * M_PI;
+  }
+    
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+  (*funcs[func_idx]) (ang, axisIndex);
+
+  if (state == STEP_BACKWARD ||
+      state == STEP_FORWARD) state = STOPPED;
+  
+  glfwSwapBuffers(window);
+  glfwPollEvents();
+}
+
+void
+render()
 {
   glLoadIdentity();
   gluLookAt(0.0, 0.0, z_off,	// eye
 	    0.0, 0.0, 0.0,	// lookat
 	    0.0, 1.0, 0.0);	// up
 
+  double last_time = glfwGetTime ();
+  double targetInterval = 1.0 / 60.0; // 60 FPS
   double start_time = glfwGetTime ();
 
   while (!glfwWindowShouldClose(window)) {
-    if (!func_locked) {
-      double now =  glfwGetTime ();
-      if ((now - start_time) > 5.0) {
-	start_time = now;
-	if (++func_idx >= nr_funcs)
-	  func_idx = 0;
-      }
+    double currentTime = glfwGetTime();
+    double deltaTime = currentTime - last_time;
+    if (deltaTime >= targetInterval) {
+      do_render (start_time);
     }
-    
-    if (state != STOPPED) {
-      ang += (state == STEP_BACKWARD) ? -0.01 : 0.01;
-      if (ang > 2.0 * M_PI) ang -= 2.0 * M_PI;
-      else if (ang < 0.0) ang += 2.0 * M_PI;
-    }
-    
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    (*funcs[func_idx]) (ang, axisIndex);
-
-    if (state == STEP_BACKWARD ||
-	state == STEP_FORWARD) state = STOPPED;
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
   }
   glfwTerminate();
 }
@@ -240,6 +251,7 @@ main (int ac, char *av[])
       {"shape",     required_argument, 0,  's' },
       {"xpos",      required_argument, 0,  'y' },
       {"ypos",      required_argument, 0,  'x' },
+      {"state",     required_argument, 0,  1000 },
       {0,           0,                 0,   0 }
     };
 
@@ -248,6 +260,7 @@ main (int ac, char *av[])
     while (-1 != (c = getopt_long (ac, av, "w:h:v:a:s:x:y:",
 				   long_options, &option_index))) {
       switch (c) {
+      case 1000: state = atoi (optarg); break;
       case 'x': x_pos  = atoi (optarg); break;
       case 'y': y_pos  = atoi (optarg); break;
       case 'w': width  = atoi (optarg); break;
@@ -308,7 +321,7 @@ main (int ac, char *av[])
     return EXIT_FAILURE;
   }
 
-  glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+  glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
   window = glfwCreateWindow (width, height, "Platonic shapes",
 			     nullptr, nullptr);
   glfwSetWindowPos(window, x_pos, y_pos);
@@ -330,11 +343,17 @@ main (int ac, char *av[])
   glViewport(0, 0, iwidth, iheight);
   glMatrixMode(GL_PROJECTION);
   glEnable(GL_DEPTH_TEST);
+  glfwWindowHint(GLFW_DEPTH_BITS, 24);
   glLoadIdentity();
-  gluPerspective(30.0, (double)iwidth / (double)iheight, 1.0, 100.0);
+  gluPerspective(30.0, (double)iwidth / (double)iheight, 2.0, 10.0);
 
   glMatrixMode(GL_MODELVIEW);
-
+  glDepthFunc(GL_LESS);
+#if 0
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+  glFrontFace(GL_CCW); // or GL_CW depending on your vertex order
+#endif
 
   render ();
 
