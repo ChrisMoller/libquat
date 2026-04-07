@@ -197,7 +197,7 @@ Quat::operator/(double v)	// divide by double
 }
 
 Quat
-Quat::operator/=(const double v)	// multiply by double assign
+Quat::operator/=(const double v)	// divide by double assign
 {
   a = a / v;
   b = b / v;

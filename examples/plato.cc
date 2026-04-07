@@ -49,7 +49,25 @@ char *vidout = nullptr;
 FILE* ffmpeg = nullptr;
 
 typedef void (*drawit) (GLdouble ang, int axisIndex);
+
+#if 1
+drawit funcs[] = {
+  &draw_tetrahedron,
+#define TETRAHEDRON	0
+  &draw_cube,
+#define CUBE		1
+  &draw_octahedron,
+#define OCTAHEDRON	2
+  &draw_icosahedron
+#define ICOSAHEDRON	3
+};
+int nr_funcs = sizeof(funcs)/sizeof(drawit);
+bool func_locked = false;
+
+int func_idx = CUBE;
+#else
 drawit func = draw_cube;
+#endif
 
 enum {
   STOPPED,
@@ -64,12 +82,35 @@ double y_off = 0.0;
 double z_off = EYE_RADIUS;
 
 void
-show_ang (int ix, vector<Quat> rr, int v0, int v1, int v2)
+show_ang (int x0, int x1, int x2, vector<Quat> rr, int v0, int v1, int v2)
 {
   double rang  = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
+  double m0 = +(rr[v0] - rr[v1]);
+  double m1 = +(rr[v1] - rr[v2]);
+  double m2 = +(rr[v2] - rr[v0]);
+  Quat ctr = (rr[v0] + rr[v1] + rr[v2]) / 3.0;
   Quat   cross = (rr[v0] - rr[v1]).qcross (rr[v2] - rr[v1]);
+  if (m1 < 1.0) {
+#if 0
+    fprintf (stdout,
+	     "%06d  %02d %02d %02d (%g %g %g) W=%+g %3g\n",
+	     (1000 * x0) + (100 * x1) + x2,   v0,  v1,  v2, m0, m1, m2,
+	     (ctr/cross).W (),
+	     R2D (rang));
+#else
+    fprintf (stdout,
+	     "%02d %02d %02d  %02d %02d %02d (%g %g %g) W=%+g %3g\n",
+	     x0, x1, x2,   v0,  v1,  v2, m0, m1, m2,
+	     (ctr/cross).W (),
+	     R2D (rang));
+#endif
+  }
+#if 0
   cout << ix << " " << v0 << " " << v1 << " " << v2 << " "
-       << R2D (rang) << " " << cross << endl;
+    //       << " " << cross
+       << " " << R2D (rang)
+       << endl;
+#endif
 }
 
 void
@@ -154,8 +195,18 @@ void render()
 	    0.0, 0.0, 0.0,	// lookat
 	    0.0, 1.0, 0.0);	// up
 
+  double start_time = glfwGetTime ();
 
   while (!glfwWindowShouldClose(window)) {
+    if (!func_locked) {
+      double now =  glfwGetTime ();
+      if ((now - start_time) > 5.0) {
+	start_time = now;
+	if (++func_idx >= nr_funcs)
+	  func_idx = 0;
+      }
+    }
+    
     if (state != STOPPED) {
       ang += (state == STEP_BACKWARD) ? -0.01 : 0.01;
       if (ang > 2.0 * M_PI) ang -= 2.0 * M_PI;
@@ -164,7 +215,7 @@ void render()
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    (*func) (ang, axisIndex);
+    (*funcs[func_idx]) (ang, axisIndex);
 
     if (state == STEP_BACKWARD ||
 	state == STEP_FORWARD) state = STOPPED;
@@ -223,18 +274,19 @@ main (int ac, char *av[])
 	}
 	break;
       case 's':
+	func_locked = true;
 	switch (*optarg) {
 	case 't':
-	  func = draw_tetrahedron;
+	  func_idx = TETRAHEDRON;
 	  break;
 	case 'c':
-	  func = draw_cube;
+	  func_idx = CUBE;
 	  break;
 	case 'o':
-	  func = draw_octahedron;
+	  func_idx = OCTAHEDRON;
 	  break;
 	case 'i':
-	  func = draw_icosahedron;
+	  func_idx = ICOSAHEDRON;
 	  break;
 	}
 	break;
