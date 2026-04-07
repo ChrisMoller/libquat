@@ -54,9 +54,6 @@ vector<Quat> icosahedron = {
 #define VERT_10  rr[10].X (),  rr[10].Y (), rr[10].Z ()
 #define VERT_11  rr[11].X (),  rr[11].Y (), rr[11].Z ()
 
-#if 0
-bool done_it = false;
-#endif
 void
 draw_icosahedron (GLdouble ang, int axisIndex)
 {

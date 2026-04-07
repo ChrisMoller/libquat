@@ -27,6 +27,10 @@ enum {
 
 extern double axes[][3];
 
+#if 0
+bool done_it = false;
+#endif
+
 void
 draw_octahedron (double ang, int axisIndex)
 {
@@ -37,82 +41,86 @@ draw_octahedron (double ang, int axisIndex)
       octahedron[i] /= SCALE;
     }
   }
-
 #if 0
-  show_ang (0, octahedron, 2, 4, 0);
-  show_ang (1, octahedron, 2, 0, 5);
-  show_ang (2, octahedron, 2, 5, 1);
-  show_ang (3, octahedron, 2, 1, 4);
-  show_ang (4, octahedron, 3, 4, 0);
-  show_ang (5, octahedron, 3, 0, 5);
-  show_ang (6, octahedron, 3, 5, 1);
-  show_ang (7, octahedron, 3, 1, 4);
+  if (!done_it) {
+    done_it = true;
+    for (int i = 0; i < 6; i++) {
+      for (int j = 0; j < 6; j++) {
+	for (int k = 0; k < 6; k++) {
+	  if ((j != i) && (k != i) && (k != j)) {
+	    show_ang (i, j, k, octahedron, i, j, k);
+	  }
+	}
+      }
+    }
+  }
+  exit (1);
 #endif
-
+  
   Quat rotator (ang, axes[axisIndex]);
   vector<Quat> rr = rotator.qrot (octahedron);
   
-#define LEFT    rr[0].X (),  rr[0].Y (), rr[0].Z ()
-#define RIGHT   rr[1].X (),  rr[1].Y (), rr[0].Z ()
-#define TOP     rr[2].X (),  rr[2].Y (), rr[0].Z ()
-#define BOTTOM  rr[3].X (),  rr[3].Y (), rr[0].Z ()
-#define NEAR    rr[4].X (),  rr[4].Y (), rr[4].Z ()
-#define FAR     rr[5].X (),  rr[5].Y (), rr[5].Z ()  
+#define VERT_00 rr[0].X (),  rr[0].Y (), rr[0].Z ()
+#define VERT_01 rr[1].X (),  rr[1].Y (), rr[0].Z ()
+#define VERT_02 rr[2].X (),  rr[2].Y (), rr[0].Z ()
+#define VERT_03 rr[3].X (),  rr[3].Y (), rr[0].Z ()
+#define VERT_04 rr[4].X (),  rr[4].Y (), rr[4].Z ()
+#define VERT_05 rr[5].X (),  rr[5].Y (), rr[5].Z ()  
 
-  glBegin (GL_TRIANGLES); 	// 0 top left front
+  glBegin (GL_TRIANGLES); 	// 1 top left front
     glColor3d (1.0, 0.0, 0.0);	// red
-    glVertex3d (TOP);
-    glVertex3d (NEAR);
-    glVertex3d (LEFT);
+    glVertex3d (VERT_00);
+    glVertex3d (VERT_02);
+    glVertex3d (VERT_04);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 1 top left back
+  glBegin (GL_TRIANGLES); 	// 2 top left front
   glColor3d (0.0, 1.0, 0.0);	// green
-    glVertex3d (TOP);
-    glVertex3d (LEFT);
-    glVertex3d (FAR);
+    glVertex3d (VERT_00);
+    glVertex3d (VERT_02);
+    glVertex3d (VERT_05);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 2 top right back
+  glBegin (GL_TRIANGLES); 	// 3 top left front
   glColor3d (0.0, 0.0, 1.0);	// blue
-    glVertex3d (TOP);
-    glVertex3d (FAR);
-    glVertex3d (RIGHT);
+    glVertex3d (VERT_00);
+    glVertex3d (VERT_03);
+    glVertex3d (VERT_04);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 3 top right front
+  glBegin (GL_TRIANGLES); 	// 4 top left front
   glColor3d (1.0, 1.0, 0.0);	// yellow
-    glVertex3d (TOP);
-    glVertex3d (RIGHT);
-    glVertex3d (NEAR);
+    glVertex3d (VERT_00);
+    glVertex3d (VERT_03);
+    glVertex3d (VERT_05);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 4 bottom left front
+  glBegin (GL_TRIANGLES); 	// 5 top left front
   glColor3d (1.0, 0.0, 1.0);	// magenta
-    glVertex3d (BOTTOM);
-    glVertex3d (NEAR);
-    glVertex3d (LEFT);
+    glVertex3d (VERT_01);
+    glVertex3d (VERT_02);
+    glVertex3d (VERT_04);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 5 bottom left back
+  glBegin (GL_TRIANGLES); 	// 6 top left front
   glColor3d (1.0, 0.5, 0.5);	// pink
-    glVertex3d (BOTTOM);
-    glVertex3d (LEFT);
-    glVertex3d (FAR);
+    glVertex3d (VERT_01);
+    glVertex3d (VERT_02);
+    glVertex3d (VERT_05);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 6 bottom right back
-  glColor3d (0.5, 0.5, 0.5);	// pink
-    glVertex3d (BOTTOM);
-    glVertex3d (FAR);
-    glVertex3d (RIGHT);
+  glBegin (GL_TRIANGLES); 	// 7 top left front
+  glColor3d (0.5, 0.5, 0.5);	// grey
+    glVertex3d (VERT_01);
+    glVertex3d (VERT_03);
+    glVertex3d (VERT_04);
   glEnd ();
 
-  glBegin (GL_TRIANGLES); 	// 7 bottom right front
+  glBegin (GL_TRIANGLES); 	// 7 top left front
   glColor3d (0.5, 0.0, 0.0);	// brown
-    glVertex3d (BOTTOM);
-    glVertex3d (RIGHT);
-    glVertex3d (NEAR);
+    glVertex3d (VERT_01);
+    glVertex3d (VERT_03);
+    glVertex3d (VERT_05);
   glEnd ();
-  
+
 };
