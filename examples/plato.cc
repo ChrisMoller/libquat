@@ -5,6 +5,7 @@
 #include <Quat.hh>
 #include <getopt.h>
 #include <string.h>
+#include <float.h>
 #include <iostream>
 
 #include "plato.hh"
@@ -13,6 +14,7 @@
 #include "octahedron.hh"
 #include "dodecahedron.hh"
 #include "icosahedron.hh"
+#include "Matrix.hh"
 
 #define EYE_RADIUS 3.0
 
@@ -80,30 +82,59 @@ double x_off = 0.0;
 double y_off = 0.0;
 double z_off = EYE_RADIUS;
 
+static inline bool
+aeq(double a, double b, double tolerance) {
+  return fabs(a - b) < tolerance;
+}
+
 void
-show_ang (vector<Quat> rr, int v0, int v1, int v2)
+analyse_verts (vector<Quat> rr, int v0, int v1, int v2, int v3, int v4)
+{
+}
+
+void
+show_ang (vector<Quat> rr, int v0, int v1, int v2, int v3, int v4)
 {
   double rang  = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
   double m0 = +(rr[v0] - rr[v1]);
   double m1 = +(rr[v1] - rr[v2]);
-  double m2 = +(rr[v2] - rr[v0]);
-  Quat ctr = (rr[v0] + rr[v1] + rr[v2]) / 3.0;
-  Quat   cross = (rr[v0] - rr[v1]).qcross (rr[v2] - rr[v1]);
-  //  if (m1 < 1.0) {
+  double m2 = +(rr[v2] - rr[v3]);
+  double m3 = +(rr[v3] - rr[v4]);
+  double m4 = +(rr[v4] - rr[v0]);
+  Quat  ctr = (rr[v0] + rr[v1] + rr[v2] +rr[v3] + rr[v4]) / 5.0;
+
+  Quat  cr0 = (rr[v4] - rr[v0]).qcross (rr[v1] - rr[v0]);
+  Quat  cr1 = (rr[v0] - rr[v1]).qcross (rr[v2] - rr[v1]);
+  Quat  cr2 = (rr[v1] - rr[v2]).qcross (rr[v3] - rr[v2]);
+  Quat  cr3 = (rr[v2] - rr[v3]).qcross (rr[v4] - rr[v3]);
+  Quat  cr4 = (rr[v3] - rr[v4]).qcross (rr[v0] - rr[v4]);
+
+  if (m0 == 1 &&
+      aeq (m0, m1, 1e-5) &&
+      aeq (m0, m2, 1e-5) &&
+      aeq (m0, m3, 1e-5) &&
+      aeq (m0, m4, 1e-5)
+      ) {
+    cout << "   " << cr0 << endl;
+    cout << "   " << cr1 << endl;
+    cout << "   " << cr2 << endl;
+    cout << "   " << cr3 << endl;
+    cout << "   " << cr4 << endl;
 #if 1
     fprintf (stdout,
-	     "%02d %02d %02d (%g %g %g) W = %s  %3g\n",
-	     v0,  v1,  v2, m0, m1, m2,
-	     (ctr/cross).qstr ().c_str (),
+	     "%02d %02d %02d %02d %02d (%g %g %g %g %g) W = %s  %3g\n",
+	     v0,  v1,  v2, v3, v4, m0, m1, m2, m3, m4, 
+	     (ctr/cr0).qstr ().c_str (),
 	     R2D (rang));
-#else
+#endif
+#if 0
     fprintf (stdout,
 	     "%02d %02d %02d  %02d %02d %02d (%g %g %g) W=%+g %3g\n",
 	     x0, x1, x2,   v0,  v1,  v2, m0, m1, m2,
 	     (ctr/cross).W (),
 	     R2D (rang));
 #endif
-    //}
+    }
 #if 0
   cout << ix << " " << v0 << " " << v1 << " " << v2 << " "
     //       << " " << cross

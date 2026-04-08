@@ -7,33 +7,30 @@
 #define  PHI 1.618033989
 #define IPHI 0.618033989
 
-/***
-
-The specific set of 20 vertex coordinates is:
-*   **$$(\pm 1, \pm 1, \pm 1)$$**:     The 8 vertices forming a cube (e.g., $$(1,1,1), (1,1,-1), (1,-1,1), \dots$$).
-*   **$$(0, \pm \phi, \pm 1/\phi)$$**: The 4 vertices where one coordinate is 0, and the others involve $$\phi$$ and $$1/\phi$$ (e.g., $$(0, \phi, 1/\phi), (0, \phi, -1/\phi), \dots$$).
-*   **$$(\pm 1/\phi, 0, \pm \phi)$$**: The 4 vertices where the middle coordinate is 0.
-*   **$$(\pm \phi, \pm 1/\phi, 0)$$**: The 4 vertices where the last coordinate is 0.
-
-Note that $$1/\phi = \phi - 1 \approx 0.618$$. These 20 points represent the corners where three pentagonal faces meet.
-***/
-
 #define SCALE 2.0
 static bool scale_done = false;
 
 vector<Quat> dodecahedron = {
-  Quat (0,  1.0,   1.0,   1.0),	//  0
-  Quat (0,  1.0,   1.0,  -1.0),	//  1
-  Quat (0,  1.0,  -1.0,   1.0),	//  2
-  Quat (0,  1.0,  -1.0,  -1.0),	//  3
-  Quat (0, -1.0,   1.0,   1.0),	//  4
-  Quat (0, -1.0,   1.0,  -1.0),	//  5
-  Quat (0, -1.0,  -1.0,   1.0),	//  6
-  Quat (0, -1.0,  -1.0,  -1.0),	//  7
-  Quat (0,  0.0,  PHI1,  IPHI),	//  8
-  Quat (0,  0.0,  PHI1, -IPHI),	//  9
-  Quat (0,  0.0, -PHI1,  IPHI),	// 10
-  Quat (0,  0.0, -PHI1, -IPHI),	// 11
+  Quat (0,   1.0,   1.0,   1.0),	//  0
+  Quat (0,   1.0,   1.0,  -1.0),	//  1
+  Quat (0,   1.0,  -1.0,   1.0),	//  2
+  Quat (0,   1.0,  -1.0,  -1.0),	//  3
+  Quat (0,  -1.0,   1.0,   1.0),	//  4
+  Quat (0,  -1.0,   1.0,  -1.0),	//  5
+  Quat (0,  -1.0,  -1.0,   1.0),	//  6
+  Quat (0,  -1.0,  -1.0,  -1.0),	//  7
+  Quat (0,   0.0,   PHI,  IPHI),	//  8
+  Quat (0,   0.0,   PHI, -IPHI),	//  9
+  Quat (0,   0.0,  -PHI,  IPHI),	// 10
+  Quat (0,   0.0,  -PHI, -IPHI),	// 11
+  Quat (0,  IPHI,   0.0,   PHI),	// 12
+  Quat (0,  IPHI,   0.0,  -PHI),	// 13
+  Quat (0, -IPHI,   0.0,   PHI),	// 14
+  Quat (0, -IPHI,   0.0,  -PHI),	// 15
+  Quat (0,   PHI,  IPHI,   0.0),	// 16
+  Quat (0,   PHI, -IPHI,   0.0),	// 17
+  Quat (0,  -PHI,  IPHI,   0.0),	// 18
+  Quat (0,  -PHI, -IPHI,   0.0)		// 19
 };
 
 extern double axes[][3];
@@ -45,6 +42,8 @@ enum {
   VTX_FB,
 };
 
+bool done_it = false;
+
 void
 draw_dodecahedron (double ang, int axisIndex)
 {
@@ -55,6 +54,28 @@ draw_dodecahedron (double ang, int axisIndex)
       dodecahedron[i] /= SCALE;
     }
   }
+
+  if (!done_it) {
+    done_it = true;
+    for (int i = 0; i < 20; i++) {
+      for (int j = 0; j < 20; j++) {
+	for (int k = 0; k < 20; k++) {
+	  for (int l = 0; l < 20; l++) {
+	    for (int m = 0; m < 20; m++) {
+	      if ((j != i) &&
+		  (k != i) && (k != j) &&
+		  (l != i) && (l != j) && (l != k) &&
+		  (m != i) && (m != j) && (m != k) && (m != l)
+		  ) {
+		analyse_verts (dodecahedron, i, j, k, l, m);
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+  exit (1);
   
 #if 0
   show_ang (0, rr, LUR, RUR, RLR);		// back
