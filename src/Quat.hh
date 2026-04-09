@@ -62,6 +62,7 @@ public:
   Quat (double ai);
   Quat (double *v);
   Quat (double theta, double *v);
+  vector<double> vec() {vector<double> rc = {b, c, d}; return rc;}
 
   double scalar () {return a;}
   double W () {return a;}

@@ -176,7 +176,7 @@ draw_icosahedron (GLdouble ang, int axisIndex)
   glEnd ();
 
   glBegin (GL_TRIANGLES); // t 10
-  glColor3d (0.9375, 0.195312, 0.898438);	// cot pink
+  glColor3d (0.9375, 0.195312, 0.898438);	// hot pink
     glVertex3d (VERT_01);
     glVertex3d (VERT_06);
     glVertex3d (VERT_11);

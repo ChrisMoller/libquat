@@ -1,4 +1,4 @@
-   CFLAGS = -g \
+   CFLAGS = -O2 \
              `pkg-config --cflags  glfw3` \
              `pkg-config --cflags  gl` \
              `pkg-config --cflags  glu` \
@@ -7,7 +7,7 @@
              `pkg-config --cflags  ftgl` \
              `pkg-config --cflags  freetype2`
      INCS = -I../src
-  LDFLAGS = 
+  LDFLAGS = -s
      LIBS = -L../src/.libs -lquat -Wl,-rpath,../src/.libs \
              `pkg-config --libs  glfw3` \
              `pkg-config --libs  gl` \

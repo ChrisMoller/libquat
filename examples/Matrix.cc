@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "Matrix.hh"
 
 Matrix::Matrix (int r, int c)
@@ -64,7 +64,7 @@ Matrix::cofactor (int r, int c)
 double
 Matrix::det ()
 {
-  double v = NAN;
+  double v = 0.0;
 
   if (this->rows () == 2)
     v = (this->val (0, 0) * this->val (1,1)) -
@@ -76,6 +76,9 @@ Matrix::det ()
       double id = cf->det ();
       delete cf;
       v += sign * this->val (0, k) * id;
+      if (isnan (v)) {
+	std::cout << "boom\n";
+      }
     }
   }
   

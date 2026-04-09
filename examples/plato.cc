@@ -87,9 +87,61 @@ aeq(double a, double b, double tolerance) {
   return fabs(a - b) < tolerance;
 }
 
+static void
+rotate (vector<int> vidx) {
+  int least = 1e6;
+  int least_idx = -1;
+  for (int i = 0; i < vidx.size (); i++) {
+    if (least > vidx[i]) {
+      least = vidx[i];
+      least_idx = i;
+    }
+  }
+  vector<int> cpy;
+  for (int i = least_idx; i < vidx.size (); i++)
+    cpy.push_back (vidx[i]);
+  for (int i = 0; i < least_idx; i++)
+    cpy.push_back (vidx[i]);
+  cout << cpy[0] << " " << cpy[1] << " " << cpy[2] << " "
+       << cpy[3] << " " << cpy[4] << endl;
+}
+
 void
 analyse_verts (vector<Quat> rr, int v0, int v1, int v2, int v3, int v4)
 {
+  vector<int> vidx = {v0, v1, v2, v3, v4};
+  Matrix mtx (4, 4);
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 3; j++)
+      mtx.val (i, j, rr[vidx[i]].vec ()[j]);
+    mtx.val (i, 3, 1.0);
+  }
+  double d3 = mtx.det ();
+  for (int j = 0; j < 3; j++)
+    mtx.val (3, j, rr[v4].vec ()[j]);
+  double d4 = mtx.det ();
+  if (aeq (d3, 0.0, 1e-5) && aeq (d4, 0.0, 1e-5)) {
+    double rang  = (rr[v0] - rr[v1]).qang (rr[v2] - rr[v1]);
+    if (aeq (rang, D2R (108.0), 1e-5)) {	// dodecahedron-specific
+      double m0 = +(rr[v0] - rr[v1]);
+      double m1 = +(rr[v1] - rr[v2]);
+      double m2 = +(rr[v2] - rr[v3]);
+      double m3 = +(rr[v3] - rr[v4]);
+      double m4 = +(rr[v4] - rr[v0]);
+
+      if (aeq (m0, m1, 1e-5) &&
+	  aeq (m0, m2, 1e-5) &&
+	  aeq (m0, m3, 1e-5) &&
+	  aeq (m0, m4, 1e-5)
+	  ) {			// if all sides equal
+	Quat  ctr = (rr[v0] + rr[v1] + rr[v2] +rr[v3] + rr[v4]) / 5.0;
+	Quat  cr0 = (rr[v4] - rr[v0]).qcross (rr[v1] - rr[v0]);
+	if ((ctr/cr0).W () > 0.0) {
+	  rotate (vidx);
+	}
+      }
+    }
+  }
 }
 
 void
@@ -109,20 +161,22 @@ show_ang (vector<Quat> rr, int v0, int v1, int v2, int v3, int v4)
   Quat  cr3 = (rr[v2] - rr[v3]).qcross (rr[v4] - rr[v3]);
   Quat  cr4 = (rr[v3] - rr[v4]).qcross (rr[v0] - rr[v4]);
 
-  if (m0 == 1 &&
+  if (// m0 == 1 &&
       aeq (m0, m1, 1e-5) &&
       aeq (m0, m2, 1e-5) &&
       aeq (m0, m3, 1e-5) &&
       aeq (m0, m4, 1e-5)
       ) {
+#if 0
     cout << "   " << cr0 << endl;
     cout << "   " << cr1 << endl;
     cout << "   " << cr2 << endl;
     cout << "   " << cr3 << endl;
     cout << "   " << cr4 << endl;
+#endif
 #if 1
     fprintf (stdout,
-	     "%02d %02d %02d %02d %02d (%g %g %g %g %g) W = %s  %3g\n",
+	     "%02d %02d %02d %02d %02d (%8g %8g %8g %8g %8g) W = %s  %3g\n",
 	     v0,  v1,  v2, v3, v4, m0, m1, m2, m3, m4, 
 	     (ctr/cr0).qstr ().c_str (),
 	     R2D (rang));

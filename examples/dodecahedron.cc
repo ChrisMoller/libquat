@@ -2,12 +2,53 @@
 #include <vector>
 #include <Quat.hh>
 
+struct Face {
+  int verts[5];
+  double r;
+  double g;
+  double b;
+  double xc;
+  double yc;
+  double zc;
+};
+
+Face Faces[] = {
+  {{0, 14, 19, 15,  1}, 0.261719, 0.386719, 0.843750, 0.0,0.0, 0.0},
+  {{0,  9, 15, 11,  2}, 0.566406, 0.117188, 0.703125, 0.0,0.0, 0.0},
+  {{1,  3, 10, 14,  8}, 0.996094, 0.878906, 0.097656, 0.0,0.0, 0.0},
+  {{2,  3, 15, 18, 14}, 0.273438, 0.597656, 0.562500, 0.0,0.0, 0.0},
+  {{4,  5, 13, 17, 12}, 0.500000, 0.500000, 0.000000, 0.0,0.0, 0.0},
+  {{4,  6, 11, 13,  9}, 0.898438, 0.097656, 0.292969, 0.0,0.0, 0.0},
+  {{5,  8, 12, 10,  7}, 0.261719, 0.386719, 0.843750, 0.0,0.0, 0.0},
+  {{0, 16, 17,  2, 12}, 0.957031, 0.507812, 0.191406, 0.0,0.0, 0.0},
+  {{0,  8,  9,  1, 16}, 0.257812, 0.828125, 0.953125, 0.0,0.0, 0.0},
+  {{1, 13,  3, 17, 16}, 0.746094, 0.933594, 0.269531, 0.0,0.0, 0.0},
+  {{2, 17,  3, 11, 10}, 0.996094, 0.976562, 0.781250, 0.0,0.0, 0.0},
+  {{4, 14,  6, 19, 18}, 0.000000, 0.000000, 0.457031, 0.0,0.0, 0.0},
+  {{4, 18,  5,  9,  8}, 0.660156, 0.660156, 0.660156, 0.0,0.0, 0.0},
+  {{5, 18, 19,  7, 15}, 0.234375, 0.703125, 0.292969, 0.0,0.0, 0.0},
+  {{6, 10, 11,  7, 19}, 0.957031, 0.507812, 0.191400, 0.0,0.0, 0.0},
+  {{6, 12, 16, 13,  7}, 0.976562, 0.742188, 0.828125, 0.0,0.0, 0.0},
+  {{0, 17, 11, 19,  4}, 0.976562, 0.742188, 0.828125, 0.0,0.0, 0.0}, //
+  {{3, 16,  8, 18,  7}, 0.996094, 0.843750, 0.691406, 0.0,0.0, 0.0}, //
+  {{3, 13, 15,  7, 11}, 0.664062, 0.996094, 0.761719, 0.0,0.0, 0.0}, //
+  {{1,  9,  5, 15, 13}, 0.859375, 0.742188, 0.996094, 0.0,0.0, 0.0}, //
+  {{2, 10,  6, 14, 12}, 0.601562, 0.386719, 0.140625, 0.0,0.0, 0.0}, //
+  {{0, 12, 14,  4,  8}, 0.898438, 0.097656, 0.292969, 0.0,0.0, 0.0}, //
+  {{0, 12, 14,  4,  8}, 0.234375, 0.703125, 0.292969, 0.0,0.0, 0.0}, //
+  {{2,  6, 18,  9, 16}, 0.500000, 0.000000, 0.000000, 0.0,0.0, 0.0}, //
+  {{1,  5, 19, 10, 17}, 0.937500, 0.195312, 0.898438, 0.0,0.0, 0.0}, //
+};
+
+bool face_ctrs_set = false;
+int nr_faces = sizeof(Faces) / sizeof(Face);
+
 #include "plato.hh"
 
 #define  PHI 1.618033989
 #define IPHI 0.618033989
 
-#define SCALE 2.0
+#define SCALE 3.0
 static bool scale_done = false;
 
 vector<Quat> dodecahedron = {
@@ -47,7 +88,6 @@ bool done_it = false;
 void
 draw_dodecahedron (double ang, int axisIndex)
 {
-
   if (!scale_done) {
     scale_done = true;
     for (int i = 0; i < dodecahedron.size (); i++) {
@@ -55,6 +95,21 @@ draw_dodecahedron (double ang, int axisIndex)
     }
   }
 
+  if (!face_ctrs_set) {
+    face_ctrs_set = true;
+    for (int i = 0; i < nr_faces; i++) {
+      for (int j = 0; j < 5; j++) {
+	Faces[i].xc += dodecahedron[Faces[i].verts[j]].X ();
+	Faces[i].yc += dodecahedron[Faces[i].verts[j]].Y ();
+	Faces[i].yc += dodecahedron[Faces[i].verts[j]].Z ();
+      }
+      Faces[i].xc /= 5.0;
+      Faces[i].yc /= 5.0;
+      Faces[i].zc /= 5.0;
+    }
+  }
+
+#if 0
   if (!done_it) {
     done_it = true;
     for (int i = 0; i < 20; i++) {
@@ -76,61 +131,47 @@ draw_dodecahedron (double ang, int axisIndex)
     }
   }
   exit (1);
-  
-#if 0
-  show_ang (0, rr, LUR, RUR, RLR);		// back
-  show_ang (10, rr, RUR, RLR, LLR); 
-  
-  show_ang (1, rr, RUF, LUF, LLF);		// front
-  show_ang (11, rr, LUF, LLF, RLF);
+#endif
 
-  show_ang (2, rr, RLF, LLF, LLR);		// bottom
-  show_ang (12, rr, LLF, LLR, RLR);
-  
-  show_ang (3, rr, RUF, LUF, LUR);		// top
-  show_ang (13, rr, LUF, LUR, RUR);
-  
-  show_ang (4, rr, LUF, LUR, LLR);		// left
-  show_ang (14, rr, LUR, LLR, LLF);
-  
-  show_ang (5, rr, RUR, RUF, RLF);		// right
-  show_ang (15, rr, RUF, RLF, RLR);
+#if 0
+  static bool shown = false;
+  if (!shown) {
+    shown = true;
+    {
+      for (int i = 0; i < 24; i++) {
+	show_ang (dodecahedron,
+		  Faces[i].verts[0],
+		  Faces[i].verts[1],
+		  Faces[i].verts[2],
+		  Faces[i].verts[3],
+		  Faces[i].verts[4]);
+      }
+    }
+  }
 #endif
 
   Quat rotator (ang, axes[axisIndex]);
   vector<Quat> rr = rotator.qrot (dodecahedron);
 
-#define NEAR_RIGHT  rr[VTX_NR].X (),  rr[VTX_NR].Y (), rr[VTX_NR].Z ()
-#define NEAR_LEFT   rr[VTX_NL].X (),  rr[VTX_NL].Y (),  rr[VTX_NL].Z ()
-#define FAR_TOP     rr[VTX_FT].X (),  rr[VTX_FT].Y (),  rr[VTX_FT].Z ()
-#define FAR_BOTTOM  rr[VTX_FB].X (),  rr[VTX_FB].Y (),  rr[VTX_FB].Z ()
-
-  glBegin (GL_TRIANGLES);			// front
-  glColor3f (1.0f, 0.0f, 0.0f);
-  glVertex3d (FAR_TOP);
-  glVertex3d (NEAR_LEFT);
-  glVertex3d (NEAR_RIGHT);
+  glBegin (GL_TRIANGLE_FAN);
+  for (int i = 0; i < 12; i ++) {
+    glColor3f (Faces[i].r, Faces[i].g, Faces[i].b);
+    glVertex3d (Faces[i].xc, Faces[i].yc, Faces[i].zc);
+    for (int j = 0; j < 5; j++) {
+      int v = Faces[i].verts[j];
+      glVertex3d (rr[v].X (),  rr[v].Y (),  rr[v].Z ());
+    }
+    int v = Faces[i].verts[0];
+    glVertex3d (rr[v].X (),  rr[v].Y (),  rr[v].Z ());
+#if 0
+    glVertex3d (rr[6].X (),  rr[6].Y (),  rr[6].Z ());
+    glVertex3d (rr[12].X (), rr[12].Y (), rr[12].Z ());
+    glVertex3d (rr[16].X (), rr[16].Y (), rr[16].Z ());
+    glVertex3d (rr[13].X (), rr[13].Y (), rr[13].Z ());
+    glVertex3d (rr[7].X (),  rr[7].Y (),  rr[7].Z ());
+    glVertex3d (rr[6].X (),  rr[6].Y (),  rr[6].Z ());
+#endif
+  }
   glEnd ();
   
-  glBegin (GL_TRIANGLES);			// left
-  glColor3f (0.0f, 1.0f, 1.0f);
-  glVertex3d (FAR_TOP);
-  glVertex3d (FAR_BOTTOM);
-  glVertex3d (NEAR_LEFT);
-  glEnd ();
-
-  glBegin (GL_TRIANGLES);			// right
-  glColor3f (0.0f, 1.0f, 0.0f);
-  glVertex3d (FAR_TOP);
-  glVertex3d (NEAR_RIGHT);
-  glVertex3d (FAR_BOTTOM);
-  glEnd ();
-
-  glBegin (GL_TRIANGLES);			// bottom
-  glColor3f (1.0f, 0.0f, 1.0f);
-  glVertex3d (NEAR_RIGHT);
-  glVertex3d (NEAR_LEFT);
-  glVertex3d (FAR_BOTTOM);
-  glEnd ();
-
 };
