@@ -6,9 +6,9 @@
              `pkg-config --cflags  glm` \
              `pkg-config --cflags  ftgl` \
              `pkg-config --cflags  freetype2`
-     INCS = -I../src
+     INCS = -I../../src
   LDFLAGS = -s
-     LIBS = -L../src/.libs -lquat -Wl,-rpath,../src/.libs \
+     LIBS = -L../../src/.libs -lquat -Wl,-rpath,../../src/.libs \
              `pkg-config --libs  glfw3` \
              `pkg-config --libs  gl` \
              `pkg-config --libs  glu` \
